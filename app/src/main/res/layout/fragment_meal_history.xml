@@ -1,0 +1,121 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.dutchman.messcostcalc.fragments.MealHistoryFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/border_panel"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/linearLayout22"
+        android:layout_margin="2dp">
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textCapWords|textCapSentences"
+            android:ems="10"
+            android:id="@+id/etMHMonth"
+            android:layout_weight="1"
+            android:hint="Month"
+            android:layout_margin="1dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="number"
+            android:ems="10"
+            android:background="@drawable/border_panel"
+            android:id="@+id/etMHYear"
+            android:layout_weight="1"
+            android:hint="Year"
+            android:layout_margin="1dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_below="@+id/linearLayout22"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/linearLayout23"
+        android:layout_margin="2dp">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Bazar"
+            android:layout_weight="1"
+            android:background="@drawable/border_round"
+            android:id="@+id/btnMHBazar"
+            android:layout_margin="1dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Cost History"
+            android:background="@drawable/border_round"
+            android:layout_weight="1"
+            android:id="@+id/btnMHCost"
+            android:layout_margin="1dp" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Meal"
+            android:background="@drawable/border_round"
+            android:id="@+id/btnMHMeal"
+            android:layout_weight="1"
+            android:layout_margin="1dp" />
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lvMealHistory"
+        android:choiceMode="singleChoice"
+        android:background="@drawable/border_panel"
+        android:layout_below="@+id/linearLayout23"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="2dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lvMealHistory"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/linearLayout24">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:hint="Total Bazar"
+            android:background="@drawable/border_panel"
+            android:id="@+id/tvMHTBazar"
+            android:layout_weight="1"
+            android:layout_gravity="bottom" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:hint="Perhead"
+            android:background="@drawable/border_panel"
+            android:id="@+id/tvMHPerhead"
+            android:layout_weight="1"
+            android:layout_gravity="bottom" />
+    </LinearLayout>
+
+</RelativeLayout>

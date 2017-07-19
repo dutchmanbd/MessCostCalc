@@ -1,0 +1,59 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainContainer"
+    android:layout_width="match_parent"
+    android:layout_height="35dp"
+    android:background="#dddddd" >
+
+    <View
+        android:id="@+id/shadowViewChildMeal"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:background="#cccccc" />
+
+    <RelativeLayout
+        android:id="@+id/innerContainerChildMeal"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="2dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="3dp"
+        android:background="#ffffff" >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_single_child_meal_name"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+                android:gravity="left|center"
+                android:paddingTop="2dp"
+                android:textColor="#000"
+                android:layout_marginLeft="20dp"
+                android:text="Name" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_single_child_meal"
+            android:text="14.00"
+            android:textColor="#555555"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,99 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.dutchman.messcostcalc.fragments.AboutFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imgViewDev"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/dev_pic"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Md. Jewel Rana"
+        android:textSize="17sp"
+        android:background="@drawable/border_panel"
+        android:id="@+id/tvDevName"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/imgViewDev"
+        android:layout_toEndOf="@+id/imgViewDev"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Northern University Bangladesh"
+        android:textStyle="bold"
+        android:background="@drawable/border_panel"
+        android:textSize="17sp"
+        android:id="@+id/tvDevCom"
+        android:layout_alignBottom="@+id/imgViewDev"
+        android:layout_toRightOf="@+id/imgViewDev"
+        android:layout_toEndOf="@+id/imgViewDev"
+        android:layout_marginLeft="10dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_panel"
+        android:id="@+id/linearLayout27"
+        android:layout_below="@+id/imgViewDev"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp">
+
+        <TextView
+            style="?android:attr/linksClickable"
+            android:id="@+id/tvDevFBLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:gravity="center"
+            android:text="www.facebook.com/dutchman.bd" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border_panel"
+        android:id="@+id/linearLayout28"
+        android:layout_below="@+id/linearLayout27"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"
+        android:layout_alignRight="@+id/linearLayout27"
+        android:layout_alignEnd="@+id/linearLayout27"
+        android:layout_marginLeft="20dp">
+
+        <TextView
+            style="?android:attr/linksClickable"
+            android:id="@+id/tvDevGmailLink"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="17sp"
+            android:gravity="center"
+            android:text="zxdmjr@gmail.com" />
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>

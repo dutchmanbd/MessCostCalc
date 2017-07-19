@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_done"
+        android:orderInCategory="100"
+        android:title="Export"
+        android:visible="false"
+        android:icon="@drawable/ic_done"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_view"
+        android:orderInCategory="100"
+        android:title="Export"
+        android:visible="false"
+        android:icon="@drawable/ic_view"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_export"
+        android:orderInCategory="100"
+        android:title="Export"
+        app:showAsAction="never" />
+
+
+    <item
+        android:id="@+id/action_import"
+        android:orderInCategory="100"
+        android:title="Import"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
+
+
+    <item
+        android:id="@+id/action_about"
+        android:orderInCategory="100"
+        android:title="@string/action_about"
+        app:showAsAction="never" />
+
+</menu>

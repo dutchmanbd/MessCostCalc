@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/border_panel">
+
+    <LinearLayout
+        android:id="@+id/linearLayout119"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:orientation="horizontal"
+        android:layout_margin="2dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Name"
+            android:background="@drawable/border_panel"
+            android:layout_weight="1"
+            android:id="@+id/tvCustomSName"
+            android:gravity="left"
+            android:layout_margin="1dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Credit"
+            android:layout_weight="1"
+            android:id="@+id/tvCustomSCredit"
+            android:background="@drawable/border_panel"
+            android:gravity="right"
+            android:layout_margin="1dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Debit"
+            android:layout_weight="1"
+            android:id="@+id/tvCustomSDebit"
+            android:background="@drawable/border_panel"
+            android:gravity="right"
+            android:layout_margin="1dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Balance"
+            android:layout_weight="1"
+            android:id="@+id/tvCustomSBalance"
+            android:background="@drawable/border_panel"
+            android:gravity="right"
+            android:layout_margin="1dp" />
+
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lvCusSearchCost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayout119"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="5dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/linearLayout114"
+        android:layout_below="@+id/lvCusSearchCost"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Cancel"
+            android:background="@drawable/border_round"
+            android:layout_weight="1"
+            android:id="@+id/btnCancelSearchResult"
+            android:layout_margin="1dp" />
+    </LinearLayout>
+
+</RelativeLayout>
