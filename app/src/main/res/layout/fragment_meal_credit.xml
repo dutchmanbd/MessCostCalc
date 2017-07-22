@@ -3,10 +3,88 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#dddddd"
     tools:context="com.example.dutchman.messcostcalc.fragments.MealCreditFragment">
 
 
+    <RelativeLayout
+        android:id="@+id/linear_layout_meal_credit"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentTop="true"
+        >
+        <View
+            android:id="@+id/shadowViewMealDebit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="3dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="#cccccc" />
+
+        <RelativeLayout
+            android:id="@+id/innerContainerMealDebit"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:background="#ffffff" >
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Name"
+                    android:layout_weight="1"
+                    android:id="@+id/tvDebitName"
+                    android:gravity="center|left" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Credit"
+                    android:layout_weight="1"
+                    android:id="@+id/tvDebitCreditTk"
+                    android:gravity="center|right" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Debit"
+                    android:layout_weight="1"
+                    android:id="@+id/tvDebitDebitTk"
+                    android:gravity="center|right" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Balance"
+                    android:layout_weight="1"
+                    android:id="@+id/tvDebitBalance"
+                    android:gravity="center|right"/>
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
     <ListView
+        android:layout_below="@+id/linear_layout_meal_credit"
         android:id="@+id/lv_meals_dc"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

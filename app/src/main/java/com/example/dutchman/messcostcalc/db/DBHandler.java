@@ -86,7 +86,7 @@ public class DBHandler extends SQLiteOpenHelper {
             KEY_YEAR +" TEXT,"+ KEY_NAME +" TEXT,"+ KEY_TK +" DOUBLE" + ");";
 
     private static final String SQL_TB_BAZAR_PER_CREDIT = "CREATE TABLE "+ TB_BAZAR_PER_CREDIT +"("+ KEY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT,"+ KEY_DATE +" TEXT,"+ KEY_MONTH +" TEXT,"+
-            KEY_YEAR +" TEXT,"+ KEY_NAME +" TEXT,"+ KEY_CREDIT +" INTEGER" + ");";
+            KEY_YEAR +" TEXT,"+ KEY_NAME +" TEXT,"+ KEY_TK +" DOUBLE" + ");";
 
 
     private static final String SQL_TB_RENT_INFO = "CREATE TABLE "+ TB_RENT_INFO +"("+ KEY_ID +" INTEGER PRIMARY KEY AUTOINCREMENT,"+ KEY_MONTH +" TEXT,"+

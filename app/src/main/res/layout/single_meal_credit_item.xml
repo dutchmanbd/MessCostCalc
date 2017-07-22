@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="80dp">
+
+    <View
+        android:id="@+id/shadowViewMealCreditItem"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="#cccccc" />
+
+    <RelativeLayout
+        android:id="@+id/innerContainerMealDebitItem"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:background="#ffffff" >
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Name"
+                android:layout_weight="1"
+                android:id="@+id/tvMealDebitName"
+                android:gravity="center|left" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Credit"
+                android:layout_weight="1"
+                android:id="@+id/tvMealDebitCreditTk"
+                android:gravity="center|right" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Debit"
+                android:layout_weight="1"
+                android:id="@+id/tvMealDebitDebitTk"
+                android:gravity="center|right" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Balance"
+                android:layout_weight="1"
+                android:id="@+id/tvMealDebitBalance"
+                android:gravity="center|right"/>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

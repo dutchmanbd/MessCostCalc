@@ -37,6 +37,7 @@ public class DatabaseConstant {
 
             public static final String KEY_MEMBER_NAME = "person_name";
 
+
         }
     }
 
@@ -48,6 +49,16 @@ public class DatabaseConstant {
             public static final String KEY_MEAL = "meal";
         }
 
+    }
+
+    public class MealDebitCreditTB{
+
+        public static final String NAME = "bazar_per_credit";
+
+        public class COL extends COLUMN{
+
+            public static final String KEY_MEMBER_NAME = "person_name";
+        }
     }
 
 }
