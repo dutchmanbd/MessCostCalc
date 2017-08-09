@@ -78,14 +78,27 @@ public class MemberEditActivity extends AppCompatActivity {
 
         context = getApplicationContext();
 
+        memberDataSource = MemberDataSource.getInstance(context);
+
         memberIntent = getIntent();
 
         initializeViews();
 
-
-
-
     }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        memberDataSource = MemberDataSource.getInstance(context);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MySharedPref.save(context,Constant.Class.MEMBER);
+    }
+
 
 
     @Override
@@ -178,15 +191,6 @@ public class MemberEditActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        //MainActivity.backFromMemberEditActivity = true;
-        MySharedPref.save(context,Constant.Class.MEMBER);
-    }
-
-
-
     private void initializeViews(){
 
         etMemberDate = (EditText) findViewById(R.id.edit_text_member_date);
@@ -196,9 +200,6 @@ public class MemberEditActivity extends AppCompatActivity {
         acMemberName = (AutoCompleteTextView) findViewById(R.id.auto_complete_member_name);
 
         ibMemberCalendar = (ImageButton) findViewById(R.id.image_button_member_calendar);
-
-        memberDataSource = new MemberDataSource(context);
-
 
         etMemberDate.setOnTouchListener(touchListener);
         etMemberTk.setOnTouchListener(touchListener);
@@ -385,9 +386,6 @@ public class MemberEditActivity extends AppCompatActivity {
         public void onDateSet(DatePicker view, int year, int month, int day) {
             // Do something with the date chosen by the user
             month += 1;
-            String finalDay = day > 9 ? ("" + day) : ("0" + day);
-            String finalMonth = month > 9 ? ("" + month) : ("0" + month);
-            String finalYear = "" + year;
 
             String date = String.format("%02d-%02d-%d",day,month,year);
 

@@ -76,11 +76,18 @@ public class BazarFragment extends Fragment {
 
         this.context = getActivity().getApplicationContext();
 
-        bazarDataSource = new BazarDataSource(context);
+        bazarDataSource = BazarDataSource.getInstance(context);
 
         initializeViews(view);
 
         return view;
+    }
+
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     private void initializeViews(View view){
@@ -134,6 +141,8 @@ public class BazarFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        bazarDataSource = BazarDataSource.getInstance(getActivity().getApplicationContext());
 
         if (sentToEditBazarActivity) {
             sentToEditBazarActivity = false;

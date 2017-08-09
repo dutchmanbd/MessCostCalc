@@ -10,7 +10,7 @@ public class MemberInfo {
     private String date;
     private String pName;
     private String pTk;
-    private int total;
+    private double total;
 
     private String month;
     private String year;
@@ -47,7 +47,7 @@ public class MemberInfo {
         this.pTk = pTk;
     }
 
-    public MemberInfo(String date, String pName, String pTk, int total){
+    public MemberInfo(String date, String pName, String pTk, double total){
 
         this.date = date;
         this.pName = pName;
@@ -56,7 +56,7 @@ public class MemberInfo {
         this.total = total;
     }
 
-    public MemberInfo(String date, String month, String year, String pName, String pTk, int total){
+    public MemberInfo(String date, String month, String year, String pName, String pTk, double total){
 
         this.date = date;
         this.month = month;
@@ -104,7 +104,7 @@ public class MemberInfo {
     public String getpName() {
         return pName;
     }
-    public int getTotal() {
+    public double getTotal() {
         return total;
     }
 

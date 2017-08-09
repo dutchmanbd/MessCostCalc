@@ -69,17 +69,13 @@ public class AddMealFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public void setContext(Context context){
-        this.context = context;
-
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_meal, container, false);
+
+        context = getContext();
 
         initializeViews(view);
         return view;

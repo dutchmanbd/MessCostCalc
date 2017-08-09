@@ -62,9 +62,9 @@ public class CustomMemberDetailDialog {
         Button btnCusMDetailOk = (Button) convertView.findViewById(R.id.btnCusMDetailOk);
 
 
-        List<MemberInfo> list = handler.getMembers();
+        List<MemberInfo> list = null; //handler.getMembers();
 
-        if(list.size() > 0 && list != null) {
+        if(list != null) {
 
             CustomMemberDetailAdapter adapter = new CustomMemberDetailAdapter(context, R.layout.custom_meal_history, list);
             lvCusMemberDatail.setAdapter(adapter);

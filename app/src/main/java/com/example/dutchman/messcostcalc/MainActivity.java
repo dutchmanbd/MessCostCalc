@@ -29,8 +29,10 @@ import com.example.dutchman.messcostcalc.fragments.CostFragment;
 import com.example.dutchman.messcostcalc.fragments.CreditFragment;
 import com.example.dutchman.messcostcalc.fragments.DebitFragment;
 import com.example.dutchman.messcostcalc.fragments.HomeFragment;
+import com.example.dutchman.messcostcalc.fragments.MealCreditFragment;
 import com.example.dutchman.messcostcalc.fragments.MealHistoryFragment;
 import com.example.dutchman.messcostcalc.fragments.MemberFragment;
+import com.example.dutchman.messcostcalc.fragments.RentCreditFragment;
 import com.example.dutchman.messcostcalc.fragments.RentHistoryFragment;
 import com.example.dutchman.messcostcalc.fragments.SettingsFragment;
 
@@ -250,7 +252,17 @@ public class MainActivity extends AppCompatActivity
             MySharedPref.save(this,Constant.Class.HOME);
             setNavItem(R.id.nav_bazar);
 
-        } else{
+        } else if(fragmentName.equals(Constant.Class.MEAL_CREDIT_DEBIT)){
+
+            MySharedPref.save(this, Constant.Class.HOME);
+            setNavItem(R.id.nav_meal_credit);
+
+        } else if(fragmentName.equals(Constant.Class.RENT_CREDIT_DEBIT)) {
+
+            MySharedPref.save(this, Constant.Class.HOME);
+            setNavItem(R.id.nav_rent_credit);
+
+        }else{
 
             setNavItem(R.id.nav_home);
         }
@@ -263,19 +275,14 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_home) {
 
             homeFragment = new HomeFragment();
-            homeFragment.setContext(context);
-
             manager = getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.rlContent,homeFragment,homeFragment.getTag()).commit();
-
             getSupportActionBar().setSubtitle("Home");
-
 
 
         } else if(id == R.id.nav_addMember){
 
             MemberFragment memberFragment = new MemberFragment();
-
             manager = getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.rlContent,memberFragment,memberFragment.getTag())
                     .commit();
@@ -286,9 +293,6 @@ public class MainActivity extends AppCompatActivity
 
 
             AddMealFragment addMealFragment = new AddMealFragment();
-
-            addMealFragment.setContext(context);
-
             manager = getSupportFragmentManager();
 
             manager.beginTransaction().replace(R.id.rlContent, addMealFragment, addMealFragment.getTag()).commit();
@@ -299,44 +303,20 @@ public class MainActivity extends AppCompatActivity
         } else if(id == R.id.nav_bazar){
 
             BazarFragment bazarFragment = new BazarFragment();
-
-
             manager = getSupportFragmentManager();
-
             manager.beginTransaction().replace(R.id.rlContent, bazarFragment, bazarFragment.getTag()).commit();
-
             getSupportActionBar().setSubtitle("Bazar");
 
         }else if (id == R.id.nav_meal_credit) {
-
-
-            CreditFragment creditFragment = new CreditFragment();
-
-            creditFragment.setDest(context, "meal");
-
+            MealCreditFragment mealCreditFragment = new MealCreditFragment();
             manager = getSupportFragmentManager();
-
-            manager.beginTransaction().replace(R.id.rlContent, creditFragment, creditFragment.getTag()).commit();
-
+            manager.beginTransaction().replace(R.id.rlContent, mealCreditFragment, mealCreditFragment.getTag()).commit();
             getSupportActionBar().setSubtitle("Add Credit");
-
-        } else if (id == R.id.nav_meal_debit) {
-
-            DebitFragment debitFragment = new DebitFragment();
-            debitFragment.setDest(context, "meal");
-
-            manager = getSupportFragmentManager();
-
-            manager.beginTransaction().replace(R.id.rlContent, debitFragment, debitFragment.getTag()).commit();
-
-            getSupportActionBar().setSubtitle("Debit");
 
         } else if(id == R.id.nav_meal_history){
 
 
             MealHistoryFragment mealHistoryFragment = new MealHistoryFragment();
-
-            mealHistoryFragment.setContext(context);
 
             manager = getSupportFragmentManager();
 
@@ -345,34 +325,32 @@ public class MainActivity extends AppCompatActivity
             getSupportActionBar().setSubtitle("Meal History");
 
 
-        } else if (id == R.id.nav_rent_per_credit) {
+        } else if (id == R.id.nav_rent_credit) {
 
-            CreditFragment creditFragment = new CreditFragment();
-
-            creditFragment.setDest(context, "rent");
+            RentCreditFragment rentCreditFragment = new RentCreditFragment();
 
             manager = getSupportFragmentManager();
 
-            manager.beginTransaction().replace(R.id.rlContent, creditFragment, creditFragment.getTag()).commit();
+            manager.beginTransaction().replace(R.id.rlContent, rentCreditFragment, rentCreditFragment.getTag()).commit();
 
             getSupportActionBar().setSubtitle("Add Credit");
 
 
-        } else if (id == R.id.nav_rent_per_debit) {
+//        } else if (id == R.id.nav_rent_per_debit) {
+//
+//            DebitFragment debitFragment = new DebitFragment();
+//            debitFragment.setDest(context, "rent");
+//
+//            manager = getSupportFragmentManager();
+//
+//            manager.beginTransaction().replace(R.id.rlContent, debitFragment, debitFragment.getTag()).commit();
+//
+//            getSupportActionBar().setSubtitle("Debit");
 
-            DebitFragment debitFragment = new DebitFragment();
-            debitFragment.setDest(context, "rent");
-
-            manager = getSupportFragmentManager();
-
-            manager.beginTransaction().replace(R.id.rlContent, debitFragment, debitFragment.getTag()).commit();
-
-            getSupportActionBar().setSubtitle("Debit");
-
-        } else if (id == R.id.nav_rent_cost) {
+        }
+        else if (id == R.id.nav_rent_cost) {
 
             CostFragment costFragment = new CostFragment();
-            costFragment.setContext(context);
             manager = getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.rlContent, costFragment, costFragment.getTag()).commit();
 
@@ -382,7 +360,6 @@ public class MainActivity extends AppCompatActivity
 
 
             RentHistoryFragment rentHistoryFragment = new RentHistoryFragment();
-            rentHistoryFragment.setContext(context);
             manager = getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.rlContent, rentHistoryFragment, rentHistoryFragment.getTag()).commit();
 

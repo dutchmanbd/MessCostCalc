@@ -3,7 +3,9 @@ package com.example.dutchman.messcostcalc.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.dutchman.messcostcalc.constants.DatabaseConstant;
 import com.example.dutchman.messcostcalc.models.Bazar;
@@ -16,32 +18,43 @@ import java.util.List;
  * Created by dutchman on 7/13/17.
  */
 
-public class BazarDataSource {
+public class BazarDataSource extends DatabaseDAO{
 
-    private DBHandler handler;
-    private SQLiteDatabase database;
     private Context context;
+    private static BazarDataSource bazarDataSource;
 
-    public BazarDataSource(Context context){
-
+    private BazarDataSource(Context context){
+        super(context);
         this.context = context;
-
-        handler = new DBHandler(this.context);
-
     }
 
 
+    public static BazarDataSource getInstance(Context context){
+        if(bazarDataSource == null)
+            bazarDataSource = new BazarDataSource(context);
+
+        return bazarDataSource;
+    }
+
     public List<String> getMembersName(int isAvailable){
 
-        MemberDataSource memberDataSource = new MemberDataSource(context);
+        MemberDataSource memberDataSource = MemberDataSource.getInstance(context);
+        List<String> lists = memberDataSource.getMembersName(isAvailable);
+        return lists;
+    }
 
-        return memberDataSource.getMembersName(isAvailable);
+    public List<String> getMembersName(String month, String year){
+        MemberDataSource memberDataSource = MemberDataSource.getInstance(context);
+        List<String> lists = memberDataSource.getMembersName(month, year);
+        return lists;
+    }
+
+    public boolean isMemberExists(int isAvailable){
+        return getMembersName(isAvailable).size() > 0;
     }
 
 
     public boolean insertBazar(Bazar bazar){
-
-        database = handler.getWritableDatabase();
 
         ContentValues values = new ContentValues();
 
@@ -54,8 +67,6 @@ public class BazarDataSource {
         // Inserting Row
         long res = database.insert(DatabaseConstant.BazarTB.NAME, null, values);
 
-        database.close();
-
         if(res == -1)
             return false;
         else
@@ -63,49 +74,51 @@ public class BazarDataSource {
     }
 
 
+
     public Bazar getBazar(int id){
-
-        database = handler.getReadableDatabase();
-
         String sql = "Select * from "+ DatabaseConstant.BazarTB.NAME + " where "+ DatabaseConstant.MemberTB.COL.KEY_ID + " = ?;";
-
-        Cursor cursor = database.rawQuery(sql, new String[]{id+""});
-
+        Cursor cursor = null;
         Bazar bazar = null;
-        if(cursor != null) {
-            cursor.moveToFirst();
-            bazar = convertToBazar(cursor);
+        try {
+            cursor = database.rawQuery(sql, new String[]{id + ""});
+            if (cursor != null) {
+                cursor.moveToFirst();
+                bazar = convertToBazar(cursor);
+            }
+        } catch (Exception e){
+            if(cursor != null)
+                cursor.close();
         }
-
-        cursor.close();
-        database.close();
-
 
         return bazar;
     }
-
 
     public List<Bazar> getBazars(String month, String year){
 
         List<Bazar> bazars = new ArrayList<>();
 
-        database = handler.getReadableDatabase();
+        Cursor cursor = null;
 
-        Cursor cursor = database.rawQuery("SELECT * FROM " + DatabaseConstant.BazarTB.NAME + " where " + DatabaseConstant.BazarTB.COL.KEY_MONTH + " = ? and "+
-                DatabaseConstant.BazarTB.COL.KEY_YEAR + " = ?;" , new String[]{month, year});
+        try {
+            cursor = database.rawQuery("SELECT * FROM " + DatabaseConstant.BazarTB.NAME + " where " + DatabaseConstant.BazarTB.COL.KEY_MONTH + " = ? and " +
+                    DatabaseConstant.BazarTB.COL.KEY_YEAR + " = ?;", new String[]{month, year});
 
-        if (cursor != null && cursor.moveToFirst()) {
+            if (cursor != null && cursor.moveToFirst()) {
 
-            do{
+                do {
 
-                Bazar bazar = convertToBazar(cursor);
-                bazars.add(bazar);
+                    Bazar bazar = convertToBazar(cursor);
+                    bazars.add(bazar);
 
-            } while (cursor.moveToNext());
+                } while (cursor.moveToNext());
 
+            }
+        } catch (Exception e){
+
+        } finally {
+            if(cursor != null)
+                cursor.close();
         }
-        cursor.close();
-        database.close();
 
         return bazars;
 
@@ -115,31 +128,30 @@ public class BazarDataSource {
     // view last date for homeFragment
     public Bazar getLastDateAndName(String month, String year){
 
-
         Bazar bazar = new Bazar();
-
-        database = handler.getReadableDatabase();
-
-        //SELECT ROWID from MYTABLE order by ROWID DESC limit 1
 
         String sql = "SELECT "+DatabaseConstant.BazarTB.COL.KEY_DATE+","+DatabaseConstant.BazarTB.COL.KEY_MEMBER_NAME+","+ DatabaseConstant.BazarTB.COL.KEY_TK+" FROM "+ DatabaseConstant.BazarTB.NAME +" WHERE "
                 + DatabaseConstant.BazarTB.COL.KEY_MONTH +" = ? AND "+ DatabaseConstant.BazarTB.COL.KEY_YEAR +" = ? ORDER BY "+ DatabaseConstant.BazarTB.COL.KEY_ID +" DESC LIMIT 1";
 
-        Cursor cursor = database.rawQuery(sql,new String[]{month,year});
+        Cursor cursor = null;
+        try {
+            cursor = database.rawQuery(sql, new String[]{month, year});
+            if (cursor.moveToFirst()) {
 
-        if(cursor == null)
-            return null;
+                //bazar = new MemberInfo(cursor.getString(0),cursor.getString(1),cursor.getString(2));
 
+                bazar.setDate(cursor.getString(0));
+                bazar.setmName(cursor.getString(1));
+                bazar.setTk(cursor.getDouble(2));
 
-        if(cursor.moveToFirst()){
+            }
+        } catch (Exception e){
 
-            //bazar = new MemberInfo(cursor.getString(0),cursor.getString(1),cursor.getString(2));
-
-            bazar.setDate(cursor.getString(0));
-            bazar.setmName(cursor.getString(1));
-            bazar.setTk(cursor.getDouble(2));
-
+        } finally {
+            if(cursor != null)
+                cursor.close();
         }
+
         return bazar;
     }
 
@@ -148,22 +160,37 @@ public class BazarDataSource {
 
         double totalCost = 0.0;
 
-        int persons = MemberDataSource.getNumberOfMembers(context, 1);
+        MemberDataSource memberDataSource = MemberDataSource.getInstance(context);
+        int persons = memberDataSource.getMembers(1).size();
 
         if(persons > 0) {
-
-            database = handler.getReadableDatabase();
 
             String sql = "SELECT SUM(" + DatabaseConstant.BazarTB.COL.KEY_TK + ") FROM " + DatabaseConstant.BazarTB.NAME + " WHERE " +
                     DatabaseConstant.BazarTB.COL.KEY_MONTH + " = ? AND " + DatabaseConstant.BazarTB.COL.KEY_YEAR + " = ?";
 
-            Cursor cursor = database.rawQuery(sql, new String[]{month, year});
+            Log.d("BazarDataSource", "getTotalBazar: "+sql);
 
-            if (cursor.moveToFirst()) {
+            Cursor cursor = null;
+            try {
+                cursor = database.rawQuery(sql, new String[]{month, year});
 
-                totalCost = cursor.getDouble(0);
+                if (cursor.moveToFirst()) {
 
+                    totalCost = cursor.getDouble(0);
+
+                }
+
+                if (cursor != null)
+                    cursor.close();
+
+
+            } catch (Exception e){
+
+            } finally {
+                if (cursor != null)
+                    cursor.close();
             }
+
             return totalCost;
 
         } else{

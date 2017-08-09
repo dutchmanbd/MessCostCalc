@@ -51,12 +51,6 @@ public class CustomAdapter extends ArrayAdapter<DebitInfo> {
 
         DebitInfo debitInfo = getItem(position);
 
-        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
-        int width = display.getWidth();  // deprecated
-        int height = display.getHeight();  // deprecated
-
-        width /= 4;
 
         if(debitInfo != null){
 
@@ -66,33 +60,22 @@ public class CustomAdapter extends ArrayAdapter<DebitInfo> {
             tvCustomBalance = (TextView) v.findViewById(R.id.tvCustomBalance);
 
 
-//            imageview.getLayoutParams().height=height;
-//            button1.getLayoutParams().height=height;
-//            button2.getLayoutParams().height=height;
-//            button3.getLayoutParams().height=height;
-//            button4.getLayoutParams().height=height;
-
-            tvCustomName.getLayoutParams().width = width;
-            tvCustomCredit.getLayoutParams().width = width;
-            tvCustomDebit.getLayoutParams().width = width;
-            tvCustomBalance.getLayoutParams().width = width;
-
             if(tvCustomName != null){
                 tvCustomName.setText(debitInfo.getPersonName());
 
             }
 
             if(tvCustomCredit != null){
-                tvCustomCredit.setText(Long.toString(debitInfo.getpCredit()));
+                tvCustomCredit.setText(Double.toString(debitInfo.getpCredit()));
 
             }
 
             if(tvCustomDebit != null) {
-                tvCustomDebit.setText(Long.toString(debitInfo.getpDebit()));
+                tvCustomDebit.setText(Double.toString(debitInfo.getpDebit()));
             }
 
             if(tvCustomBalance != null){
-                tvCustomBalance.setText(Long.toString(debitInfo.getpBalance()));
+                tvCustomBalance.setText(Double.toString(debitInfo.getpBalance()));
             }
 
             /*btnCRAdd.setOnClickListener(new View.OnClickListener() {

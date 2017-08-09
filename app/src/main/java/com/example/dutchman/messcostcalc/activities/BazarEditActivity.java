@@ -79,12 +79,26 @@ public class BazarEditActivity extends AppCompatActivity {
 
         context = getApplicationContext();
 
+        bazarDataSource = BazarDataSource.getInstance(context);
+
         bazarIntent = getIntent();
 
         initializeViews();
 
     }
 
+    @Override
+    protected void onResume() {
+        bazarDataSource = BazarDataSource.getInstance(context);
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MySharedPref.save(context, Constant.Class.BAZAR);
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -176,15 +190,6 @@ public class BazarEditActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        MySharedPref.save(context, Constant.Class.BAZAR);
-
-    }
-
-
     private void initializeViews(){
 
         etBazarDate = (EditText) findViewById(R.id.edit_text_bazar_date);
@@ -194,9 +199,6 @@ public class BazarEditActivity extends AppCompatActivity {
 
         ibBazarCalendar = (ImageButton) findViewById(R.id.image_button_bazar_calendar);
 
-        bazarDataSource = new BazarDataSource(context);
-
-
         etBazarDate.setOnTouchListener(touchListener);
         etBazarTk.setOnTouchListener(touchListener);
         acMemberName.setOnTouchListener(touchListener);
@@ -205,9 +207,6 @@ public class BazarEditActivity extends AppCompatActivity {
 
         setActions();
     }
-
-
-
 
 
     private void setActions(){
@@ -362,7 +361,6 @@ public class BazarEditActivity extends AppCompatActivity {
     }
 
 
-
     public class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
 
@@ -393,183 +391,4 @@ public class BazarEditActivity extends AppCompatActivity {
 
     }
 
-
-
-
-
-
-
-
 }
-
-
-
-
-
-
-
-
-//    private TextView tvBazarDate;
-//    private EditText etBazarTK;
-//    private Spinner etBazarName;
-//
-//    private Button btnBazarAdd,btnBazarClear;
-//
-//    private String bDate,bMonth,bYear;
-//    private String pName,advanceTk;
-//
-//    private Context context;
-//
-//    private DBHandler handler;
-//
-//    private List<String> mNameList;
-//
-//
-//    public BazarFragment() {
-//        // Required empty public constructor
-//    }
-//
-//    public void setContext(Context context){
-//
-//        this.context = context;
-//
-//        this.handler = new DBHandler(this.context);
-//    }
-//
-//
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
-//                             Bundle savedInstanceState) {
-//        // Inflate the layout for this fragment
-//        View view = inflater.inflate(R.layout.fragment_bazar, container, false);
-//
-//
-//        mNameList = new ArrayList<>();
-//
-//        mNameList = handler.getMNameList();
-//
-//
-//        tvBazarDate = (TextView) view.findViewById(R.id.tvBazarDate);
-//        etBazarName = (Spinner) view.findViewById(R.id.etBazarName);
-//        etBazarTK   = (EditText) view.findViewById(R.id.etBazarTk);
-//
-//        btnBazarAdd = (Button) view.findViewById(R.id.btnBazarAdd);
-//        btnBazarClear = (Button) view.findViewById(R.id.btnBazarClear);
-//
-//        mNameList.add(0,"Select Name");
-//
-//        if(mNameList.size() > 1) {
-//
-//            ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, mNameList);
-//
-//            etBazarName.setAdapter(adapter);
-//        }
-//        etBazarName.setSelection(0);
-//
-//        bDate  = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-//
-//        tvBazarDate.setText(bDate);
-//
-//        bMonth = new SimpleDateFormat("MMMM").format(new Date());
-//        bYear = new SimpleDateFormat("yyyy").format(new Date());
-//
-//        if(!handler.isMemberExists()){
-//
-//            CustomGoAlertDialog dialog = new CustomGoAlertDialog(context);
-//
-//            dialog.goToAddMemeberFragment();
-//
-//        }
-//
-//        btnBazarAdd.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                if(!handler.isMemberExists()){
-//
-//                    CustomGoAlertDialog dialog = new CustomGoAlertDialog(context);
-//
-//                    dialog.goToAddMemeberFragment();
-//
-//                } else {
-//
-//                    if (etBazarName.getSelectedItemPosition() > 0) {
-//
-//                        if (etBazarTK.getText().toString().trim().length() > 0) {
-//
-//                            pName = etBazarName.getSelectedItem().toString().trim();
-//                            advanceTk = etBazarTK.getText().toString().trim();
-//
-//                            if (handler.isMemberExists(pName)) {
-//
-//                                new AlertDialog.Builder(context)
-//                                        .setTitle("Add Entry")
-//                                        .setMessage("Are you sure want to add this entry ?")
-//                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-//                                            public void onClick(DialogInterface dialog, int which) {
-//                                                // continue with add
-//
-//                                                if (handler.insertBazarInfo(bDate, bMonth, bYear, pName, advanceTk)) {
-//
-//                                                    Toast.makeText(context, "Successfully added", Toast.LENGTH_SHORT).show();
-//
-//                                                } else {
-//
-//                                                    Toast.makeText(context, "Data can not added", Toast.LENGTH_SHORT).show();
-//                                                }
-//
-//                                            }
-//                                        })
-//                                        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-//                                            public void onClick(DialogInterface dialog, int which) {
-//                                                // do nothing
-//                                            }
-//                                        })
-//                                        .setIcon(android.R.drawable.ic_dialog_alert)
-//                                        .show();
-//                            } else {
-//                                Toast.makeText(context, pName + " is not exists. Please check member list", Toast.LENGTH_SHORT).show();
-//                            }
-//                        } else {
-//                            Toast.makeText(context, "Add bazar Cost first", Toast.LENGTH_SHORT).show();
-//                        }
-//                        etBazarName.setSelection(0);
-//
-//                    } else {
-//
-//                        etBazarName.performClick();
-//                        Toast.makeText(context, "Please select name first ", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            }
-//        });
-//
-//
-//        btnBazarClear.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                if(!handler.isMemberExists()){
-//
-//                    CustomGoAlertDialog dialog = new CustomGoAlertDialog(context);
-//
-//                    dialog.goToAddMemeberFragment();
-//
-//                } else {
-//
-//                    if (etBazarName.getSelectedItemPosition() > 0 || etBazarTK.getText().toString().trim().length() > 0) {
-//
-//                        etBazarName.setSelection(0);
-//                        etBazarTK.setText("");
-//
-//                    } else {
-//
-//                        Toast.makeText(context, "Already empty", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            }
-//        });
-//
-//
-//        return view;
-//    }

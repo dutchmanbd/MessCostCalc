@@ -77,11 +77,23 @@ public class AddMembersFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_add_members, container, false);
 
         this.context = getActivity().getApplicationContext();
-        memberDataSource = new MemberDataSource(this.context);
+        memberDataSource = MemberDataSource.getInstance(this.context);
 
         inits(view);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        memberDataSource = MemberDataSource.getInstance(getActivity().getApplicationContext());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
     }
 
     private void inits(View view){

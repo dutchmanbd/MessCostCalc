@@ -57,7 +57,7 @@ public class Credit {
         return tk;
     }
 
-    public void setTk(Double credit) {
+    public void setTk(Double tk) {
         this.tk = tk;
     }
 }

@@ -65,8 +65,7 @@ public class MemberFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_add_members, container, false);
 
         this.context = getActivity().getApplicationContext();
-        memberDataSource = new MemberDataSource(this.context);
-
+        memberDataSource = MemberDataSource.getInstance(this.context);
 
         inits(view);
 
@@ -119,6 +118,11 @@ public class MemberFragment extends Fragment {
         if (requestCode == OPEN_ADD_MEMBER_ACTIVITY) {
             loadMembers();
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     @Override

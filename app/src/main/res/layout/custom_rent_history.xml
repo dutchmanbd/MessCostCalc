@@ -18,14 +18,12 @@
             android:id="@+id/tvCRHRent"
             android:gravity="center"
             android:textColor="#000000"
-            android:background="@drawable/border_panel"
             android:layout_weight="1"
             android:hint="House Rent"
             android:layout_margin="2dp" />
 
         <TextView
             android:layout_width="match_parent"
-            android:background="@drawable/border_panel"
             android:layout_height="match_parent"
             android:gravity="center"
             android:textColor="#000000"
@@ -50,7 +48,6 @@
             android:gravity="center"
             android:textColor="#000000"
             android:id="@+id/tvCRHServent"
-            android:background="@drawable/border_panel"
             android:layout_weight="1"
             android:hint="Servent"
             android:layout_margin="2dp" />
@@ -61,7 +58,6 @@
             android:gravity="center"
             android:textColor="#000000"
             android:id="@+id/tvCRHNet"
-            android:background="@drawable/border_panel"
             android:layout_weight="1"
             android:hint="Internet"
             android:layout_margin="2dp" />
@@ -82,7 +78,6 @@
             android:gravity="center"
             android:textColor="#000000"
             android:id="@+id/tvCRHPaper"
-            android:background="@drawable/border_panel"
             android:layout_weight="1"
             android:hint="Paper"
             android:layout_margin="2dp" />
@@ -93,7 +88,6 @@
             android:gravity="center"
             android:textColor="#000000"
             android:id="@+id/tvCRHDirst"
-            android:background="@drawable/border_panel"
             android:layout_weight="1"
             android:hint="Dirst"
             android:layout_margin="2dp" />
@@ -114,7 +108,6 @@
             android:gravity="center"
             android:textColor="#000000"
             android:id="@+id/tvCRHOthers"
-            android:background="@drawable/border_panel"
             android:layout_weight="1"
             android:hint="Others"
             android:layout_margin="2dp" />
@@ -125,7 +118,6 @@
             android:gravity="center"
             android:textColor="#000000"
             android:id="@+id/tvCRHMembers"
-            android:background="@drawable/border_panel"
             android:layout_weight="1"
             android:hint="Members"
             android:layout_margin="2dp" />
@@ -145,7 +137,6 @@
             android:gravity="center"
             android:textColor="#000000"
             android:id="@+id/tvCRHTotal"
-            android:background="@drawable/border_panel"
             android:layout_weight="1"
             android:hint="Total"
             android:layout_margin="2dp" />
@@ -156,7 +147,6 @@
             android:gravity="center"
             android:textColor="#000000"
             android:id="@+id/tvCRHPerhead"
-            android:background="@drawable/border_panel"
             android:layout_weight="1"
             android:hint="Perhead"
             android:layout_margin="2dp" />

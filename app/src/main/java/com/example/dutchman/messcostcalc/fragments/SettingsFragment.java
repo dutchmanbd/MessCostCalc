@@ -73,7 +73,7 @@ public class SettingsFragment extends Fragment {
 
 
                             homeFragment = new HomeFragment();
-                            homeFragment.setContext(context);
+                            //homeFragment.setContext(context);
 
                             manager = getActivity().getSupportFragmentManager();
 
@@ -91,7 +91,7 @@ public class SettingsFragment extends Fragment {
 
 
                             homeFragment = new HomeFragment();
-                            homeFragment.setContext(context);
+                            //homeFragment.setContext(context);
 
                             manager = getActivity().getSupportFragmentManager();
 

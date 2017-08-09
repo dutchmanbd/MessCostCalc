@@ -2,8 +2,10 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#00796B</color>
+    <!--<color name="colorAccent">#FF4081</color>-->
     <color name="colorBlack">#FF000000</color>
     <color name="bg_app">#009688</color>
     <color name="bg_app2">#00796B</color>
+
 </resources>

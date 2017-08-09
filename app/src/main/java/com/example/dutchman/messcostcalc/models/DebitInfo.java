@@ -7,16 +7,16 @@ public class DebitInfo {
 
 
     private String pName;
-    private int pCredit;
-    private int pDebit;
-    private int pBalance;
+    private double pCredit;
+    private double pDebit;
+    private double pBalance;
 
 
     public DebitInfo(){
 
     }
 
-    public DebitInfo(String pName,int pCredit, int pDebit, int pBalance){
+    public DebitInfo(String pName,double pCredit, double pDebit, double pBalance){
 
         this.pName = pName;
         this.pCredit = pCredit;
@@ -33,7 +33,7 @@ public class DebitInfo {
         this.pName = pName;
     }
 
-    public int getpCredit() {
+    public double getpCredit() {
         return pCredit;
     }
 
@@ -41,7 +41,7 @@ public class DebitInfo {
         this.pCredit = pCredit;
     }
 
-    public int getpDebit() {
+    public double getpDebit() {
         return pDebit;
     }
 
@@ -49,7 +49,7 @@ public class DebitInfo {
         this.pDebit = pDebit;
     }
 
-    public int getpBalance() {
+    public double getpBalance() {
         return pBalance;
     }
 

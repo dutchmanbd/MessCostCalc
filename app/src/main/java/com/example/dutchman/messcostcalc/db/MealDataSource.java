@@ -3,6 +3,7 @@ package com.example.dutchman.messcostcalc.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.dutchman.messcostcalc.constants.DatabaseConstant;
@@ -15,23 +16,26 @@ import java.util.List;
  * Created by dutchman on 7/14/17.
  */
 
-public class MealDataSource {
+public class MealDataSource extends DatabaseDAO{
 
-    private DBHandler handler;
-    private SQLiteDatabase database;
     private Context context;
+    private static MealDataSource mealDataSource;
 
-    public MealDataSource(Context context){
+    private MealDataSource(Context context){
 
+        super(context);
         this.context = context;
-
-        handler = new DBHandler(this.context);
     }
 
+    public static MealDataSource getInstance(Context context){
+
+        if(mealDataSource == null)
+            mealDataSource = new MealDataSource(context);
+
+        return mealDataSource;
+    }
 
     public boolean insertMember(Meal meal){
-
-        database = handler.getWritableDatabase();
 
         ContentValues values = new ContentValues();
 
@@ -44,8 +48,6 @@ public class MealDataSource {
         // Inserting Row
         long res = database.insert(DatabaseConstant.MealTB.NAME, null, values);
 
-        database.close();
-
         if(res == -1)
             return false;
         else
@@ -55,24 +57,29 @@ public class MealDataSource {
 
     public Meal getMeal(int id){
 
-        database = handler.getReadableDatabase();
+        Cursor cursor = null;
+        Meal meal = null;
+        try {
+            cursor = database.query(DatabaseConstant.MealTB.NAME,
+                    new String[]{
+                            DatabaseConstant.MealTB.COL.KEY_ID,
+                            DatabaseConstant.MealTB.COL.KEY_DATE,
+                            DatabaseConstant.MealTB.COL.KEY_MONTH,
+                            DatabaseConstant.MealTB.COL.KEY_YEAR,
+                            DatabaseConstant.MealTB.COL.KEY_MEMBER_NAME,
+                            DatabaseConstant.MealTB.COL.KEY_MEAL},
+                    DatabaseConstant.MealTB.COL.KEY_ID + " = " + id,
+                    null, null, null, null);
 
-        Cursor cursor = database.query(DatabaseConstant.MealTB.NAME,
-                new String[] {
-                        DatabaseConstant.MealTB.COL.KEY_ID,
-                        DatabaseConstant.MealTB.COL.KEY_DATE,
-                        DatabaseConstant.MealTB.COL.KEY_MONTH,
-                        DatabaseConstant.MealTB.COL.KEY_YEAR,
-                        DatabaseConstant.MealTB.COL.KEY_MEMBER_NAME,
-                        DatabaseConstant.MealTB.COL.KEY_MEAL},
-                DatabaseConstant.MealTB.COL.KEY_ID + " = " + id,
-                null, null, null, null);
+            cursor.moveToFirst();
+            meal = convertToMeal(cursor);
+        } catch (Exception e){
 
-        cursor.moveToFirst();
-        Meal meal = convertToMeal(cursor);
 
-        cursor.close();
-        database.close();
+        } finally {
+            if(cursor != null)
+                cursor.close();
+        }
 
         return meal;
     }
@@ -80,25 +87,30 @@ public class MealDataSource {
 
     public Meal getMeal(String month, String year){
 
-        database = handler.getReadableDatabase();
+        Cursor cursor = null;
+        Meal meal = null;
 
-        Cursor cursor = database.query(DatabaseConstant.MealTB.NAME,
-                new String[] {
-                        DatabaseConstant.MealTB.COL.KEY_ID,
-                        DatabaseConstant.MealTB.COL.KEY_DATE,
-                        DatabaseConstant.MealTB.COL.KEY_MONTH,
-                        DatabaseConstant.MealTB.COL.KEY_YEAR,
-                        DatabaseConstant.MealTB.COL.KEY_MEMBER_NAME,
-                        DatabaseConstant.MealTB.COL.KEY_MEAL},
-                DatabaseConstant.MealTB.COL.KEY_MONTH + " = " + month + " and "+
-                        DatabaseConstant.MealTB.COL.KEY_YEAR + " = " + year,
-                null, null, null, null);
+        try {
+            cursor = database.query(DatabaseConstant.MealTB.NAME,
+                    new String[]{
+                            DatabaseConstant.MealTB.COL.KEY_ID,
+                            DatabaseConstant.MealTB.COL.KEY_DATE,
+                            DatabaseConstant.MealTB.COL.KEY_MONTH,
+                            DatabaseConstant.MealTB.COL.KEY_YEAR,
+                            DatabaseConstant.MealTB.COL.KEY_MEMBER_NAME,
+                            DatabaseConstant.MealTB.COL.KEY_MEAL},
+                    DatabaseConstant.MealTB.COL.KEY_MONTH + " = " + month + " and " +
+                            DatabaseConstant.MealTB.COL.KEY_YEAR + " = " + year,
+                    null, null, null, null);
 
-        cursor.moveToFirst();
-        Meal meal = convertToMeal(cursor);
+            cursor.moveToFirst();
+            meal = convertToMeal(cursor);
+        } catch (Exception e){
 
-        cursor.close();
-        database.close();
+        } finally {
+            if(cursor != null)
+                cursor.close();
+        }
         
         return meal;
     }
@@ -108,26 +120,124 @@ public class MealDataSource {
 
         List<Meal> meals = new ArrayList<>();
 
-        database = handler.getReadableDatabase();
+        Cursor cursor = null;
+        try {
+            cursor = database.rawQuery("SELECT * FROM " + DatabaseConstant.MealTB.NAME + " where " + DatabaseConstant.MealTB.COL.KEY_MONTH + " = ? and " +
+                    DatabaseConstant.MealTB.COL.KEY_YEAR + " = ?;", new String[]{month, year});
 
-        Cursor cursor = database.rawQuery("SELECT * FROM " + DatabaseConstant.MealTB.NAME + " where " + DatabaseConstant.MealTB.COL.KEY_MONTH + " = ? and "+
-                DatabaseConstant.MealTB.COL.KEY_YEAR + " = ?;" , new String[]{month, year});
+            if (cursor != null && cursor.moveToFirst()) {
 
-        if (cursor != null && cursor.moveToFirst()) {
+                do {
 
-            do{
+                    Meal meal = convertToMeal(cursor);
+                    meals.add(meal);
 
-                Meal meal = convertToMeal(cursor);
-                meals.add(meal);
+                } while (cursor.moveToNext());
 
-            } while (cursor.moveToNext());
+            }
+        } catch (Exception e){
 
+        } finally {
+            if(cursor != null)
+                cursor.close();
         }
-        cursor.close();
-        database.close();
 
         return meals;
 
+    }
+
+
+    public List<Meal> getMealInfo(String month, String year){
+        List<Meal> dateList = new ArrayList<>();
+
+        String sql = "SELECT DISTINCT "+DatabaseConstant.MealTB.COL.KEY_DATE+" FROM " + DatabaseConstant.MealTB.NAME + " WHERE " +
+                DatabaseConstant.MealTB.COL.KEY_MONTH + " = ? AND " + DatabaseConstant.MealTB.COL.KEY_YEAR + " = ?";
+
+        Cursor cursor = null;
+        try {
+            cursor = database.rawQuery(sql, new String[]{month, year});
+
+            if (cursor.moveToFirst()) {
+                do {
+
+                    String date = cursor.getString(0);
+                    double mealNo = getTotalMealOnDate(date);
+
+                    Meal meal = new Meal();
+                    meal.setDate(date);
+                    meal.setMeal(mealNo);
+
+                    dateList.add(meal);
+
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e){
+
+        } finally {
+            if(cursor != null)
+                cursor.close();
+        }
+
+        return dateList;
+    }
+
+    public double getTotalMealOnDate(String date){
+
+        double mealNo = 0;
+
+        String sql = "SELECT SUM("+DatabaseConstant.MealTB.COL.KEY_MEAL+") FROM " + DatabaseConstant.MealTB.NAME + " WHERE " +
+                DatabaseConstant.MealTB.COL.KEY_DATE + " = ?";
+        Cursor cursor = null;
+        try {
+            cursor = database.rawQuery(sql, new String[]{date});
+
+            if (cursor.moveToFirst()) {
+                do {
+
+                    mealNo = cursor.getDouble(0);
+
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e){
+
+        } finally {
+            if(cursor != null)
+                cursor.close();
+        }
+
+        return mealNo;
+    }
+
+
+    public List<Meal> getMealOnDate(String date){
+
+        List<Meal> meals = new ArrayList<>();
+        Meal meal;
+
+        String sql = "SELECT * FROM " + DatabaseConstant.MealTB.NAME + " WHERE " +
+                DatabaseConstant.MealTB.COL.KEY_DATE + " = ?";
+        Cursor cursor = null;
+
+        try {
+            cursor = database.rawQuery(sql, new String[]{date});
+
+            if (cursor.moveToFirst()) {
+                do {
+
+                    meal = convertToMeal(cursor);
+
+                    meals.add(meal);
+
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e){
+
+        } finally {
+            if(cursor != null)
+                cursor.close();
+        }
+
+        return meals;
     }
 
 

@@ -79,10 +79,25 @@ public class MealEditActivity extends AppCompatActivity {
 
         context = getApplicationContext();
 
+        mealDataSource = MealDataSource.getInstance(context);
+
         mealIntent = getIntent();
 
         initializeViews();
 
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mealDataSource = MealDataSource.getInstance(context);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MySharedPref.save(context,Constant.Class.MEMBER);
     }
 
 
@@ -177,14 +192,6 @@ public class MealEditActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        //MainActivity.backFromMemberEditActivity = true;
-        MySharedPref.save(context,Constant.Class.MEMBER);
-    }
-
-
     private void initializeViews(){
 
         etMealDate = (EditText) findViewById(R.id.edit_text_meal_date);
@@ -196,9 +203,6 @@ public class MealEditActivity extends AppCompatActivity {
         acMealMonth = (AutoCompleteTextView) findViewById(R.id.auto_complete_meal_month);
 
         ibMealCalendar = (ImageButton) findViewById(R.id.image_button_meal_calendar);
-
-        mealDataSource = new MealDataSource(context);
-
 
         etMealDate.setOnTouchListener(touchListener);
         acMealMonth.setOnTouchListener(touchListener);
@@ -223,7 +227,9 @@ public class MealEditActivity extends AppCompatActivity {
             }
         });
 
-        List<String> membersName = MemberDataSource.getMembersName(this,1);
+        MemberDataSource memberDataSource = MemberDataSource.getInstance(context);
+        List<String> membersName = memberDataSource.getMembersName(1);
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item, membersName);
         acMealName.setAdapter(adapter);
         acMealName.setThreshold(1);

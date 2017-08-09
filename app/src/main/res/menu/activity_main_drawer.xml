@@ -34,11 +34,6 @@
                     />
 
                 <item
-                    android:id="@+id/nav_meal_debit"
-                    android:icon="@drawable/ic_dashboard"
-                    android:title="Debit" />
-
-                <item
                     android:id="@+id/nav_meal_history"
                     android:icon="@drawable/ic_history"
                     android:title="History" />
@@ -60,14 +55,14 @@
                     android:title="Rent Calculate" />
 
                 <item
-                    android:id="@+id/nav_rent_per_credit"
+                    android:id="@+id/nav_rent_credit"
                     android:icon="@drawable/ic_credit_card"
                     android:title="Credit" />
 
-                <item
-                    android:id="@+id/nav_rent_per_debit"
-                    android:icon="@drawable/ic_dashboard"
-                    android:title="Debit" />
+                <!--<item-->
+                    <!--android:id="@+id/nav_rent_per_debit"-->
+                    <!--android:icon="@drawable/ic_dashboard"-->
+                    <!--android:title="Debit" />-->
 
                 <item
                     android:id="@+id/nav_rent_history"

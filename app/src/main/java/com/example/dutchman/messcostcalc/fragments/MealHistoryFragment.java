@@ -4,6 +4,7 @@ package com.example.dutchman.messcostcalc.fragments;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -14,13 +15,24 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.dutchman.messcostcalc.adapters.BazarAdapter;
+import com.example.dutchman.messcostcalc.adapters.MealExpendableAdapter;
+import com.example.dutchman.messcostcalc.db.BazarDataSource;
 import com.example.dutchman.messcostcalc.db.DBHandler;
+import com.example.dutchman.messcostcalc.db.MealDataSource;
+import com.example.dutchman.messcostcalc.db.MealDebitCreditDataSource;
+import com.example.dutchman.messcostcalc.models.Bazar;
+import com.example.dutchman.messcostcalc.models.Credit;
 import com.example.dutchman.messcostcalc.models.DebitInfo;
+import com.example.dutchman.messcostcalc.models.Meal;
 import com.example.dutchman.messcostcalc.models.MemberInfo;
 import com.example.dutchman.messcostcalc.models.MemberMealInfo;
 import com.example.dutchman.messcostcalc.models.PersonCredit;
@@ -35,6 +47,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -51,17 +64,29 @@ public class MealHistoryFragment extends Fragment{
     private EditText etMHYear;
     private Spinner etMHMonth;
 
-    private Button btnMHBazar,btnMHCost,btnMHMeal;
+
+    private RadioGroup rgMealHistoryOption;
+
+    private RadioButton rbMealHisMeal;
+
 
     private ListView lvMealHistory;
 
+    private ExpandableListView evMealHistory;
+
     private TextView tvMHTBazar,tvMHPerhead;
 
-    private List<MemberInfo> list;
-    private List<DebitInfo> list1;
-    private List<MemberInfo> dateList;
+    private List<Bazar> bazarList;
+    private List<DebitInfo> debitInfoList;
+    private List<Meal> dateList;
+
+    private HashMap<Meal, List<Meal>> hashMap;
 
     private List<String> monthList;
+
+    private BazarDataSource bazarDataSource;
+    private MealDataSource mealDataSource;
+    private MealDebitCreditDataSource mealDebitCreditDataSource;
 
 
 
@@ -74,52 +99,72 @@ public class MealHistoryFragment extends Fragment{
 
     }
 
-    public void setContext(Context context){
-
-        this.context = context;
-
-        this.handler = new DBHandler(this.context);
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_meal_history, container, false);
 
+        context = getContext();
+
+        mealDataSource = MealDataSource.getInstance(context);
+
+        mealDebitCreditDataSource = MealDebitCreditDataSource.getInstance(context);
+
+        bazarDataSource = BazarDataSource.getInstance(context);
+
+
+        if(!bazarDataSource.isMemberExists(1)){
+
+            CustomGoAlertDialog dialog = new CustomGoAlertDialog(context);
+            dialog.goToAddMemeberFragment();
+
+        } else {
+
+            inits(view);
+        }
+
+        return view;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+//        bazarDataSource.close();
+//        mealDataSource.close();
+//        mealDebitCreditDataSource.close();
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+//        bazarDataSource.open();
+//        mealDebitCreditDataSource.open();
+//        mealDataSource.open();
+
+    }
+
+    private void inits(View view){
 
         // init
-
-        list = new ArrayList<>();
-       list1 = new ArrayList<>();
+        bazarList = new ArrayList<>();
+        debitInfoList = new ArrayList<>();
         dateList = new ArrayList<>();
+        hashMap = new HashMap<>();
 
 
+        // view init
         etMHMonth = (Spinner) view.findViewById(R.id.etMHMonth);
         etMHYear  = (EditText) view.findViewById(R.id.etMHYear);
 
-
-        // init spinner
-
-        ArrayAdapter<String> monthAdapter = new ArrayAdapter<>(context,android.R.layout.simple_spinner_dropdown_item,monthList);
-        etMHMonth.setAdapter(monthAdapter);
-
-        String mnth = new SimpleDateFormat("MMMM").format(new Date());
-
-        int index = monthList.indexOf(mnth);
-
-        etMHMonth.setSelection(index);
-
-        // set year
-
-        etMHYear.setText( new SimpleDateFormat("yyyy").format(new Date()));
-
-        btnMHBazar = (Button) view.findViewById(R.id.btnMHBazar);
-        btnMHCost  = (Button) view.findViewById(R.id.btnMHCost);
-        btnMHMeal  = (Button) view.findViewById(R.id.btnMHMeal);
+        rgMealHistoryOption = (RadioGroup) view.findViewById(R.id.rg_meal_history_options);
+        rbMealHisMeal = (RadioButton) view.findViewById(R.id.rb_meal_his_meal);
 
         lvMealHistory = (ListView) view.findViewById(R.id.lvMealHistory);
+        evMealHistory = (ExpandableListView) view.findViewById(R.id.ev_meal_his);
 
         tvMHTBazar   = (TextView) view.findViewById(R.id.tvMHTBazar);
         tvMHPerhead  = (TextView) view.findViewById(R.id.tvMHPerhead);
@@ -127,229 +172,195 @@ public class MealHistoryFragment extends Fragment{
         tvMHTBazar.setVisibility(View.GONE);
         tvMHPerhead.setVisibility(View.GONE);
 
-        WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
-        int width = display.getWidth();  // deprecated
-        int height = display.getHeight();  // deprecated
+        // init spinner
+        ArrayAdapter<String> monthAdapter = new ArrayAdapter<>(context,android.R.layout.simple_spinner_dropdown_item,monthList);
+        etMHMonth.setAdapter(monthAdapter);
 
+        String currentMonth = new SimpleDateFormat("MMMM").format(new Date());
+        int index = monthList.indexOf(currentMonth);
 
-        height /= 2;
+        etMHMonth.setSelection(index);
 
+        // set year
+        etMHYear.setText( new SimpleDateFormat("yyyy").format(new Date()));
 
-        //lvMealHistory.getLayoutParams().height = height;
+        etMHYear.setSelection(etMHYear.getText().toString().length());
 
         lvMealHistory.setClickable(false);
 
 
         SharedPreferences sharedPref = context.getSharedPreferences("settings",Context.MODE_PRIVATE);
         if(sharedPref.getBoolean("is_without", true))
-            btnMHMeal.setVisibility(View.GONE);
+            rbMealHisMeal.setVisibility(View.GONE);
         else if(sharedPref.getBoolean("is_with",true))
-            btnMHMeal.setVisibility(View.VISIBLE);
+            rbMealHisMeal.setVisibility(View.VISIBLE);
 
 
-        if(!handler.isMemberExists()){
+        evMealHistory.setVisibility(View.GONE);
 
-            CustomGoAlertDialog dialog = new CustomGoAlertDialog(context);
+        //By default bazar adapter is selected
+        getBazarHistory();
 
-            dialog.goToAddMemeberFragment();
+        rgMealHistoryOption.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+
+
+                if(checkedId == R.id.rb_meal_his_bazar){
+
+                    getBazarHistory();
+
+                } else if(checkedId == R.id.rb_meal_his_cost){
+
+                    getCostHistory();
+
+                } else if(checkedId == R.id.rb_meal_his_meal){
+
+                    getMealHistory();
+                }
+
+            }
+        });
+
+
+    }
+
+    private void getBazarHistory(){
+
+        lvMealHistory.setEnabled(false);
+        lvMealHistory.setVisibility(View.VISIBLE);
+        evMealHistory.setVisibility(View.GONE);
+
+        if(etMHMonth.getSelectedItemPosition() > 0 && etMHYear.getText().toString().trim().length() > 0){
+
+            String month = etMHMonth.getSelectedItem().toString().trim();
+            String year = etMHYear.getText().toString().trim();
+
+            bazarList.clear();
+
+            bazarList = bazarDataSource.getBazars(month,year);
+
+            if(bazarList != null && bazarList.size() > 0) {
+
+                //CustomAdapterMealHistory adapter = new CustomAdapterMealHistory(context, R.layout.custom_meal_history, list);
+                BazarAdapter bazarAdapter = new BazarAdapter(context, R.layout.single_member_item, bazarList);
+
+                lvMealHistory.setAdapter(bazarAdapter);
+
+                if(bazarAdapter.getCount() > 6){
+                    View item = bazarAdapter.getView(0, null, lvMealHistory);
+                    item.measure(0, 0);
+                    ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (6.5 * item.getMeasuredHeight()));
+                    lvMealHistory.setLayoutParams(params);
+                }
+
+                tvMHTBazar.setVisibility(View.VISIBLE);
+                tvMHPerhead.setVisibility(View.VISIBLE);
+
+
+                double total = bazarDataSource.getTotalBazar(month, year);          //bazarList.get(0).getTotal();
+                int members = bazarDataSource.getBazars(month, year).size();        //handler.getNumberOfMembers("Meal",month, year);
+
+                if (members != 0) {
+
+                    tvMHTBazar.setText("Total: "+total);
+
+                    tvMHPerhead.setText("Perhead: "+(total / members + 1));
+                }
+            } else{
+
+                tvMHTBazar.setText("Total: 0");
+
+                tvMHPerhead.setText("Perhead: 0");
+            }
+
+
+        } else{
+            Toast.makeText(context,"Select month first",Toast.LENGTH_SHORT).show();
+            etMHMonth.performClick();
         }
+    }
 
+    private void getCostHistory(){
 
-        btnMHBazar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        lvMealHistory.setEnabled(false);
+        lvMealHistory.setVisibility(View.VISIBLE);
+        evMealHistory.setVisibility(View.GONE);
 
-                if(!handler.isMemberExists()){
+        if(etMHMonth.getSelectedItemPosition() > 0 && etMHYear.getText().toString().trim().length() > 0) {
 
-                    CustomGoAlertDialog dialog = new CustomGoAlertDialog(context);
+            tvMHTBazar.setVisibility(View.GONE);
+            tvMHPerhead.setVisibility(View.GONE);
 
-                    dialog.goToAddMemeberFragment();
+            debitInfoList.clear();
 
-                }
+            String month = etMHMonth.getSelectedItem().toString().trim();
+            String year = etMHYear.getText().toString().trim();
 
-                lvMealHistory.setEnabled(false);
+            List<Credit> personCredits = mealDebitCreditDataSource.getCreditForMHistory(month, year);
 
-                if(etMHMonth.getSelectedItemPosition() > 0 && etMHYear.getText().toString().trim().length() > 0){
+            double personCost = bazarDataSource.getTotalBazar(month,year);
+            DebitInfo debitInfo;
 
-                    String month = etMHMonth.getSelectedItem().toString().trim();
-                    String year = etMHYear.getText().toString().trim();
+            for (Credit credit : personCredits) {
 
-                    list.clear();
+                debitInfo = new DebitInfo(credit.getName(), credit.getTk(), personCost, (credit.getTk() - personCost));
+                debitInfoList.add(debitInfo);
 
-
-                    list = handler.getBazarInfo(month,year);
-
-                    if(list != null && list.size() > 0) {
-
-                        CustomAdapterMealHistory adapter = new CustomAdapterMealHistory(context, R.layout.custom_meal_history, list);
-
-                        lvMealHistory.setAdapter(adapter);
-
-                        if(adapter.getCount() > 6){
-                            View item = adapter.getView(0, null, lvMealHistory);
-                            item.measure(0, 0);
-                            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (6.5 * item.getMeasuredHeight()));
-                            lvMealHistory.setLayoutParams(params);
-                        }
-
-                        tvMHTBazar.setVisibility(View.VISIBLE);
-                        tvMHPerhead.setVisibility(View.VISIBLE);
-
-
-                        int total = list.get(0).getTotal();
-                        int members = handler.getNumberOfMembers("Meal",month, year);
-
-                        Toast.makeText(context,"members: "+members,Toast.LENGTH_SHORT).show();
-
-
-                        if (members != 0) {
-
-                            tvMHTBazar.setText("Total: "+total);
-
-                            tvMHPerhead.setText("Perhead: "+(total / members + 1));
-                        }
-                    } else{
-
-                        tvMHTBazar.setText("Total: 0");
-
-                        tvMHPerhead.setText("Perhead: 0");
-                    }
-
-
-                } else{
-                    Toast.makeText(context,"Select month first",Toast.LENGTH_SHORT).show();
-                    etMHMonth.performClick();
-                }
             }
-        });
 
-        btnMHCost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            CustomAdapter adapter = new CustomAdapter(context,R.layout.custom_row,debitInfoList);
 
-                if(!handler.isMemberExists()){
+            lvMealHistory.setAdapter(adapter);
+        } else{
+            Toast.makeText(context,"Select month first",Toast.LENGTH_SHORT).show();
+            etMHMonth.performClick();
+        }
+    }
 
-                    CustomGoAlertDialog dialog = new CustomGoAlertDialog(context);
+    private void getMealHistory(){
 
-                    dialog.goToAddMemeberFragment();
+        if(etMHMonth.getSelectedItemPosition() > 0 && etMHYear.getText().toString().trim().length() > 0){
 
-                }
+            String month = etMHMonth.getSelectedItem().toString().trim();
+            String year = etMHYear.getText().toString().trim();
 
-                lvMealHistory.setEnabled(false);
+            tvMHTBazar.setVisibility(View.GONE);
+            tvMHPerhead.setVisibility(View.GONE);
+            lvMealHistory.setVisibility(View.GONE);
+            evMealHistory.setVisibility(View.VISIBLE);
 
-                if(etMHMonth.getSelectedItemPosition() > 0 && etMHYear.getText().toString().trim().length() > 0) {
+            dateList.clear();
 
-                    tvMHTBazar.setVisibility(View.GONE);
-                    tvMHPerhead.setVisibility(View.GONE);
+            dateList = mealDataSource.getMealInfo(month,year);
 
-                    list1.clear();
+            hashMap.clear();
 
-                    String month = etMHMonth.getSelectedItem().toString().trim();
-                    String year = etMHYear.getText().toString().trim();
+            for(Meal meal : dateList){
 
-                    List<PersonCredit> personCredits = handler.getPersonCreditForMHistory("Meal",month, year);
+                List<Meal> meals = mealDataSource.getMealOnDate(meal.getDate());
 
-                    int personCost = 0;
-
-                    personCost = handler.getBazarPerCost(month,year);
-                    DebitInfo debitInfo;
-
-                    for (PersonCredit personCredit : personCredits) {
-
-                        debitInfo = new DebitInfo(personCredit.getName(), personCredit.getTk(), personCost, (personCredit.getTk() - personCost));
-                        list1.add(debitInfo);
-
-                    }
-
-                    CustomAdapter adapter = new CustomAdapter(context,R.layout.custom_row,list1);
-
-                    lvMealHistory.setAdapter(adapter);
-                } else{
-                    Toast.makeText(context,"Select month first",Toast.LENGTH_SHORT).show();
-                    etMHMonth.performClick();
-                }
+                hashMap.put(meal, meals);
             }
-        });
 
-        btnMHMeal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            if(dateList != null) {
+                lvMealHistory.setEnabled(true);
 
 
-                if(!handler.isMemberExists()){
+                MealExpendableAdapter adapter = new MealExpendableAdapter(getActivity().getApplicationContext(), dateList, hashMap);
+                //CustomAdapterMealRow adapter = new CustomAdapterMealRow(context, R.layout.custom_meal_row, dateList);
+                evMealHistory.setAdapter(adapter);
 
-                    CustomGoAlertDialog dialog = new CustomGoAlertDialog(context);
+            } else{
 
-                    dialog.goToAddMemeberFragment();
-
-                }
-
-                if(etMHMonth.getSelectedItemPosition() > 0 && etMHYear.getText().toString().trim().length() > 0){
-
-
-                    String month = etMHMonth.getSelectedItem().toString().trim();
-                    String year = etMHYear.getText().toString().trim();
-
-                    tvMHTBazar.setVisibility(View.GONE);
-                    tvMHPerhead.setVisibility(View.GONE);
-
-                    //Toast.makeText(context,month+" "+year,Toast.LENGTH_SHORT).show();
-
-                    dateList.clear();
-
-                    dateList = handler.getMealInfo(month,year);
-
-
-                    if(dateList != null) {
-                        lvMealHistory.setEnabled(true);
-
-                        CustomAdapterMealRow adapter = new CustomAdapterMealRow(context, R.layout.custom_meal_row, dateList);
-
-                        lvMealHistory.setAdapter(adapter);
-
-                        //lvMealHistory.setOnItemClickListener(MealHistoryFragment.this);
-
-
-                        lvMealHistory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                                lvMealHistory.setEnabled(false);
-                                //Toast.makeText(context,"Clicked",Toast.LENGTH_SHORT).show();
-                                TextView tvCMRMealDateClicked = (TextView) view.findViewById(R.id.tvCMRMealDate);
-
-                                //Toast.makeText(context,tvCMRMealDateClicked.getText().toString(),Toast.LENGTH_SHORT).show();
-
-                                List<MemberMealInfo> memberMealList;
-
-
-                                memberMealList = handler.getMemberMeal(tvCMRMealDateClicked.getText().toString());
-
-                                CustomMemberMealAdapter adapter = new CustomMemberMealAdapter(context, R.layout.custom_member_meal_row, memberMealList);
-
-                                lvMealHistory.setAdapter(adapter);
-                            }
-                        });
-
-
-
-
-                    } else{
-
-                       Toast.makeText(context,"No data found in meal",Toast.LENGTH_SHORT).show();
-                    }
-
-
-                } else{
-                    Toast.makeText(context,"Select month first",Toast.LENGTH_SHORT).show();
-                    etMHMonth.performClick();
-                }
+               Toast.makeText(context,"No data found in meal",Toast.LENGTH_SHORT).show();
             }
-        });
 
 
-        return view;
+        } else{
+            Toast.makeText(context,"Select month first",Toast.LENGTH_SHORT).show();
+            etMHMonth.performClick();
+        }
     }
 
 }

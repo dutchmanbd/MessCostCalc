@@ -27,6 +27,7 @@ public class Constant {
         public static final String BAZAR = "BazarFragment";
         public static final String HOME = "HomeFragment";
         public static final String MEAL_CREDIT_DEBIT = "MealCreditFragment";
+        public static final String RENT_CREDIT_DEBIT = "RentCreditFragment";
 
     }
 

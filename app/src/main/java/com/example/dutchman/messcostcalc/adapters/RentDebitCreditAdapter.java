@@ -16,13 +16,13 @@ import com.example.dutchman.messcostcalc.models.Credit;
 import java.util.List;
 
 /**
- * Created by dutchman on 7/20/17.
+ * Created by dutchman on 8/8/17.
  */
 
-public class MealDebitCreditAdapter extends ArrayAdapter<Credit> {
+public class RentDebitCreditAdapter extends ArrayAdapter<Credit> {
 
 
-    public MealDebitCreditAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<Credit> credits) {
+    public RentDebitCreditAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<Credit> credits) {
         super(context, resource, credits);
     }
 
@@ -42,7 +42,7 @@ public class MealDebitCreditAdapter extends ArrayAdapter<Credit> {
 
         TextView tvMealDebitCreditTk = (TextView) listItemView.findViewById(R.id.tvMealDebitCreditTk);
 
-        tvMealDebitCreditTk.setText(credit.getTk()+"");
+        tvMealDebitCreditTk.setText(credit.getTk() + "");
 
         TextView tvMealDebitDebitTk = (TextView) listItemView.findViewById(R.id.tvMealDebitDebitTk);
 
@@ -54,5 +54,4 @@ public class MealDebitCreditAdapter extends ArrayAdapter<Credit> {
 
         return listItemView;
     }
-
 }

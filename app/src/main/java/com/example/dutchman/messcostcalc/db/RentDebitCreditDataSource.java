@@ -7,7 +7,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.example.dutchman.messcostcalc.constants.Constant;
 import com.example.dutchman.messcostcalc.constants.DatabaseConstant;
 import com.example.dutchman.messcostcalc.models.Credit;
 
@@ -17,28 +16,25 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by dutchman on 7/20/17.
+ * Created by dutchman on 8/8/17.
  */
 
-public class MealDebitCreditDataSource extends DatabaseDAO{
+public class RentDebitCreditDataSource extends DatabaseDAO{
 
     private Context context;
+    private static RentDebitCreditDataSource rentDebitCreditDataSource;
 
-    private static MealDebitCreditDataSource mealDebitCreditDataSource;
-
-    private MealDebitCreditDataSource(Context context){
-
+    private RentDebitCreditDataSource(Context context){
         super(context);
         this.context = context;
-        open();
     }
 
-    public static MealDebitCreditDataSource getInstance(Context context){
+    public static RentDebitCreditDataSource getInstance(Context context){
 
-        if(mealDebitCreditDataSource == null)
-            mealDebitCreditDataSource = new MealDebitCreditDataSource(context);
+        if(rentDebitCreditDataSource == null)
+            rentDebitCreditDataSource = new RentDebitCreditDataSource(context);
 
-        return mealDebitCreditDataSource;
+        return rentDebitCreditDataSource;
     }
 
     public List<String> getMembersName(int isAvailable){
@@ -53,16 +49,14 @@ public class MealDebitCreditDataSource extends DatabaseDAO{
 
         ContentValues values = new ContentValues();
 
-        values.put(DatabaseConstant.MealDebitCreditTB.COL.KEY_DATE, credit.getDate());
-        values.put(DatabaseConstant.MealDebitCreditTB.COL.KEY_MONTH, credit.getMonth());
-        values.put(DatabaseConstant.MealDebitCreditTB.COL.KEY_YEAR, credit.getYear());
-        values.put(DatabaseConstant.MealDebitCreditTB.COL.KEY_MEMBER_NAME, credit.getName());
-        values.put(DatabaseConstant.MealDebitCreditTB.COL.KEY_TK, credit.getTk());
-
-        Log.d("MealDebitCreditDataSource", "insertCredit: "+credit.getName()+" "+credit.getTk());
+        values.put(DatabaseConstant.RentDebitCreditTB.COL.KEY_DATE, credit.getDate());
+        values.put(DatabaseConstant.RentDebitCreditTB.COL.KEY_MONTH, credit.getMonth());
+        values.put(DatabaseConstant.RentDebitCreditTB.COL.KEY_YEAR, credit.getYear());
+        values.put(DatabaseConstant.RentDebitCreditTB.COL.KEY_MEMBER_NAME, credit.getName());
+        values.put(DatabaseConstant.RentDebitCreditTB.COL.KEY_TK, credit.getTk());
 
         // Inserting Row
-        long res = database.insert(DatabaseConstant.MealDebitCreditTB.NAME, null, values);
+        long res = database.insert(DatabaseConstant.RentDebitCreditTB.NAME, null, values);
 
         if(res == -1)
             return false;
@@ -72,26 +66,23 @@ public class MealDebitCreditDataSource extends DatabaseDAO{
 
     public Credit getCredit(int id){
 
-        String sql = "Select * from "+ DatabaseConstant.MealDebitCreditTB.NAME + " where "+ DatabaseConstant.MealDebitCreditTB.COL.KEY_ID + " = ?;";
+        String sql = "Select * from "+ DatabaseConstant.RentDebitCreditTB.NAME + " where "+ DatabaseConstant.RentDebitCreditTB.COL.KEY_ID + " = ?;";
 
         Cursor cursor = null;
         Credit credit = null;
-
         try {
             cursor = database.rawQuery(sql, new String[]{id + ""});
+
             if (cursor != null) {
                 cursor.moveToFirst();
                 credit = convertToCredit(cursor);
             }
-
         } catch (Exception e){
 
         } finally {
-
             if(cursor != null)
                 cursor.close();
         }
-
 
         return credit;
     }
@@ -107,8 +98,10 @@ public class MealDebitCreditDataSource extends DatabaseDAO{
 
             for (String name : names) {
 
-                cursor = database.rawQuery("SELECT SUM(" + DatabaseConstant.MealDebitCreditTB.COL.KEY_TK + ") FROM " + DatabaseConstant.MealDebitCreditTB.NAME + " where " + DatabaseConstant.MealDebitCreditTB.COL.KEY_MONTH + " = ? and " +
-                        DatabaseConstant.MealDebitCreditTB.COL.KEY_YEAR + " = ? and " + DatabaseConstant.MealDebitCreditTB.COL.KEY_MEMBER_NAME + " = ?;", new String[]{month, year, name});
+                Log.d("RentDebitCredtDataSource", "getCredits: "+name);
+
+                cursor = database.rawQuery("SELECT SUM(" + DatabaseConstant.RentDebitCreditTB.COL.KEY_TK + ") FROM " + DatabaseConstant.RentDebitCreditTB.NAME + " where " + DatabaseConstant.RentDebitCreditTB.COL.KEY_MONTH + " = ? and " +
+                        DatabaseConstant.RentDebitCreditTB.COL.KEY_YEAR + " = ? and " + DatabaseConstant.RentDebitCreditTB.COL.KEY_MEMBER_NAME + " = ?;", new String[]{month, year, name});
 
                 if (cursor.moveToFirst()) {
 
@@ -145,13 +138,11 @@ public class MealDebitCreditDataSource extends DatabaseDAO{
 
         Credit credit = new Credit();
 
-        String sql = "SELECT "+DatabaseConstant.MealDebitCreditTB.COL.KEY_DATE+","+DatabaseConstant.MealDebitCreditTB.COL.KEY_MEMBER_NAME+","+ DatabaseConstant.MealDebitCreditTB.COL.KEY_TK+" FROM "+ DatabaseConstant.MealDebitCreditTB.NAME +" WHERE "
-                + DatabaseConstant.MealDebitCreditTB.COL.KEY_MONTH +" = ? AND "+ DatabaseConstant.MealDebitCreditTB.COL.KEY_YEAR +" = ? ORDER BY "+ DatabaseConstant.MealDebitCreditTB.COL.KEY_ID +" DESC LIMIT 1";
+        String sql = "SELECT "+DatabaseConstant.RentDebitCreditTB.COL.KEY_DATE+","+DatabaseConstant.RentDebitCreditTB.COL.KEY_MEMBER_NAME+","+ DatabaseConstant.RentDebitCreditTB.COL.KEY_TK+" FROM "+ DatabaseConstant.RentDebitCreditTB.NAME +" WHERE "
+                + DatabaseConstant.RentDebitCreditTB.COL.KEY_MONTH +" = ? AND "+ DatabaseConstant.RentDebitCreditTB.COL.KEY_YEAR +" = ? ORDER BY "+ DatabaseConstant.RentDebitCreditTB.COL.KEY_ID +" DESC LIMIT 1";
 
         Cursor cursor = null;
-
         try {
-
             cursor = database.rawQuery(sql, new String[]{month, year});
 
             if (cursor.moveToFirst()) {
@@ -164,7 +155,6 @@ public class MealDebitCreditDataSource extends DatabaseDAO{
 
             }
         } catch (Exception e){
-
 
         } finally {
             if(cursor != null)
@@ -179,15 +169,13 @@ public class MealDebitCreditDataSource extends DatabaseDAO{
         double totalCost = 0.0;
 
 
-        MemberDataSource memberDataSource = MemberDataSource.getInstance(this.context);
-
+        MemberDataSource memberDataSource = MemberDataSource.getInstance(context);
         int persons = memberDataSource.getMembers(1).size();
 
         if(persons > 0) {
 
-            String sql = "SELECT SUM(" + DatabaseConstant.MealDebitCreditTB.COL.KEY_TK + ") FROM " + DatabaseConstant.MealDebitCreditTB.NAME + " WHERE " +
-                    DatabaseConstant.MealDebitCreditTB.COL.KEY_MONTH + " = ? AND " + DatabaseConstant.MealDebitCreditTB.COL.KEY_YEAR + " = ?";
-
+            String sql = "SELECT SUM(" + DatabaseConstant.RentDebitCreditTB.COL.KEY_TK + ") FROM " + DatabaseConstant.RentDebitCreditTB.NAME + " WHERE " +
+                    DatabaseConstant.RentDebitCreditTB.COL.KEY_MONTH + " = ? AND " + DatabaseConstant.RentDebitCreditTB.COL.KEY_YEAR + " = ?";
 
             Cursor cursor = null;
             try {
@@ -198,7 +186,6 @@ public class MealDebitCreditDataSource extends DatabaseDAO{
                     totalCost = cursor.getDouble(0);
 
                 }
-
             } catch (Exception e){
 
             } finally {
@@ -217,8 +204,8 @@ public class MealDebitCreditDataSource extends DatabaseDAO{
 
         List<String> members = new ArrayList<>();
 
-        String sql = "SELECT " + DatabaseConstant.MealDebitCreditTB.COL.KEY_MEMBER_NAME + " FROM " + DatabaseConstant.MealDebitCreditTB.NAME + " WHERE " +
-                DatabaseConstant.MealDebitCreditTB.COL.KEY_MONTH + " = ? AND " + DatabaseConstant.MealDebitCreditTB.COL.KEY_YEAR + " = ?";
+        String sql = "SELECT " + DatabaseConstant.RentDebitCreditTB.COL.KEY_MEMBER_NAME + " FROM " + DatabaseConstant.RentDebitCreditTB.NAME + " WHERE " +
+                DatabaseConstant.RentDebitCreditTB.COL.KEY_MONTH + " = ? AND " + DatabaseConstant.RentDebitCreditTB.COL.KEY_YEAR + " = ?";
 
         Cursor cursor = null;
         try {
@@ -260,11 +247,12 @@ public class MealDebitCreditDataSource extends DatabaseDAO{
         Cursor cursor = null;
 
         try {
+
             for (String name : nameList) {
 
-                String sql = "SELECT SUM(" + DatabaseConstant.MealDebitCreditTB.COL.KEY_TK + ") FROM " + DatabaseConstant.MealDebitCreditTB.NAME + " WHERE " +
-                        DatabaseConstant.MealDebitCreditTB.COL.KEY_MONTH + " = ? AND " + DatabaseConstant.MealDebitCreditTB.COL.KEY_YEAR + " = ? AND " +
-                        DatabaseConstant.MealDebitCreditTB.COL.KEY_MEMBER_NAME + " = ?;";
+                String sql = "SELECT SUM(" + DatabaseConstant.RentDebitCreditTB.COL.KEY_TK + ") FROM " + DatabaseConstant.RentDebitCreditTB.NAME + " WHERE " +
+                        DatabaseConstant.RentDebitCreditTB.COL.KEY_MONTH + " = ? AND " + DatabaseConstant.RentDebitCreditTB.COL.KEY_YEAR + " = ? AND " +
+                        DatabaseConstant.RentDebitCreditTB.COL.KEY_MEMBER_NAME + " = ?;";
                 cursor = database.rawQuery(sql, new String[]{month, year, name});
 
                 if (cursor.moveToFirst()) {
@@ -293,6 +281,46 @@ public class MealDebitCreditDataSource extends DatabaseDAO{
         return list;
     }
 
+
+    public int getNumberOfMembersForRent(String month, String year){
+
+        int members = 0;
+
+        String currentMonth = new SimpleDateFormat("MMMM").format(new Date());
+        String currentYear = new SimpleDateFormat("yyyy").format(new Date());
+
+        if(month.equals(currentMonth) && year.equals(currentYear)){
+            members = getMembersName(1).size();
+        } else{
+            members = getNumberOfMembers(month, year);
+        }
+
+        return members;
+    }
+    public int getNumberOfMembers(String month,String year){
+
+
+        String selectQuery = "SELECT DISTINCT "+DatabaseConstant.RentDebitCreditTB.COL.KEY_MEMBER_NAME+" FROM " + DatabaseConstant.RentDebitCreditTB.NAME+" WHERE "+DatabaseConstant.RentDebitCreditTB.COL.KEY_MONTH +" = ? AND "+DatabaseConstant.RentDebitCreditTB.COL.KEY_YEAR+" = ?;";
+
+        Cursor cursor = null;
+        int persons = 0;
+        try {
+            cursor = database.rawQuery(selectQuery, new String[]{month, year});
+
+            if (cursor.moveToFirst())
+                persons = cursor.getCount();
+        } catch (Exception e){
+
+        } finally {
+            if(cursor != null)
+                cursor.close();
+        }
+
+
+        return persons;
+    }
+
+
     public Credit convertToCredit(Cursor cursor){
 
         Credit credit = new Credit();
@@ -309,6 +337,10 @@ public class MealDebitCreditDataSource extends DatabaseDAO{
 
         return credit;
     }
+
+
+
+
 
 
 }

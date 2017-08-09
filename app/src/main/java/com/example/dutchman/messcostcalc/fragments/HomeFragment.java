@@ -15,8 +15,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.dutchman.messcostcalc.constants.Constant;
+import com.example.dutchman.messcostcalc.db.BazarDataSource;
 import com.example.dutchman.messcostcalc.db.DBHandler;
 import com.example.dutchman.messcostcalc.MainActivity;
+import com.example.dutchman.messcostcalc.db.RentInfoDatatSource;
+import com.example.dutchman.messcostcalc.models.Bazar;
 import com.example.dutchman.messcostcalc.models.MemberInfo;
 import com.example.dutchman.messcostcalc.R;
 
@@ -45,7 +48,9 @@ public class HomeFragment extends Fragment {
     private SimpleDateFormat simpleDateFormat;
 
     private Context context;
-    private DBHandler handler;
+
+    private BazarDataSource bazarDataSource;
+    private RentInfoDatatSource rentInfoDatatSource;
 
 
     public HomeFragment() {
@@ -53,21 +58,42 @@ public class HomeFragment extends Fragment {
 
     }
 
-    public void setContext(Context context){
-
-        if(this.context == null)
-            this.context = context;
-        if(this.handler == null)
-            this.handler = new DBHandler(this.context);
-
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        context = getActivity().getApplicationContext();
+
+        bazarDataSource = BazarDataSource.getInstance(context);
+        rentInfoDatatSource = RentInfoDatatSource.getInstance(context);
+
+        inits(view);
+
+        return view;
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        MainActivity activity = (MainActivity) context;
+        NavigationView navigationView = (NavigationView) activity.findViewById(R.id.nav_view);
+        SharedPreferences sharedPref = context.getSharedPreferences(Constant.MY_PREFS_NAME,Context.MODE_PRIVATE);
+
+        if(sharedPref != null)
+            if(sharedPref.getBoolean(Constant.SETTINGS_PREFS_WITHOUT_MEAL,true)) {
+
+                navigationView.getMenu().findItem(R.id.nav_add_meal).setVisible(false);
+
+            } else if(sharedPref.getBoolean(Constant.SETTINGS_PREFS_WITH_MEAL,true)){
+
+                navigationView.getMenu().findItem(R.id.nav_add_meal).setVisible(true);
+            }
+    }
+
+    private void inits(View view){
 
         //Date
         tvHomeDate   = (TextView) view.findViewById(R.id.tvHomeDate);
@@ -92,25 +118,20 @@ public class HomeFragment extends Fragment {
 
 
         //Show Date
-
         simpleDateFormat = new SimpleDateFormat("EEEE  dd MMMM yyyy");
-
         String dt = simpleDateFormat.format(new Date());
-
         tvHomeDate.setText(dt);
 
         // Show Total and perhead rent cost
-
         String month = new SimpleDateFormat("MMMM").format(new Date());
         String year = new SimpleDateFormat("yyyy").format(new Date());
 
-
         // fetch the total rent cost and perhead
-        int total = handler.getTotalCostForRent(month,year);
-        int perhead = handler.getPerheadCostFromRent(month,year);
+        int total = rentInfoDatatSource.getTotalCostForRent(month,year);
+        int perhead = rentInfoDatatSource.getPerheadCostFromRent(month,year);
 
         // get member info
-        MemberInfo memberInfo = handler.getLastDateAndName(month,year);
+        Bazar bazar = bazarDataSource.getLastDateAndName(month,year);
 
 
         if(total > 0 && perhead > 0){
@@ -132,17 +153,17 @@ public class HomeFragment extends Fragment {
 
             month = new SimpleDateFormat("MMMM").format(cal1.getTime());
 
-            total = handler.getTotalCostForRent(month,year);
-            perhead = handler.getPerheadCostFromRent(month,year);
+            total = rentInfoDatatSource.getTotalCostForRent(month,year);
+            perhead = rentInfoDatatSource.getPerheadCostFromRent(month,year);
             tvHRent.setText(total+"");
             tvHRentCost.setText(perhead+"");
         }
 
-        if(memberInfo != null){
+        if(bazar != null){
 
-            tvHBDate.setText(memberInfo.getDate());
-            tvHLName.setText(memberInfo.getpName());
-            tvHLCost.setText(memberInfo.getpTk());
+            tvHBDate.setText(bazar.getDate());
+            tvHLName.setText(bazar.getmName());
+            tvHLCost.setText(bazar.getTk()+"");
 
         } else{
 
@@ -158,19 +179,14 @@ public class HomeFragment extends Fragment {
 
             month = new SimpleDateFormat("MMMM").format(cal1.getTime());
 
-            memberInfo = handler.getLastDateAndName(month,year);
+            bazar = bazarDataSource.getLastDateAndName(month,year);
 
-            if(memberInfo != null){
+            if(bazar != null){
 
-                tvHBDate.setText(memberInfo.getDate());
-                tvHLName.setText(memberInfo.getpName());
-                tvHLCost.setText(memberInfo.getpTk());
+                tvHBDate.setText(bazar.getDate());
+                tvHLName.setText(bazar.getmName());
+                tvHLCost.setText(bazar.getTk()+"");
             }
-
-//            SimpleDateFormat newDateFormat = new SimpleDateFormat("dd/MM/yyyy");
-//            Date MyDate = newDateFormat.parse("28/12/2013");
-//            newDateFormat.applyPattern("EEEE d MMM yyyy")
-//            String MyDate = newDateFormat.format(MyDate);
         }
         try {
 
@@ -183,7 +199,10 @@ public class HomeFragment extends Fragment {
                 tvHBDay.setText(dayName);
             } else{
 
-                tvHBDay.setText("");
+                tvHBDay.setText("DAY");
+                tvHBDate.setText("Date");
+                tvHLName.setText("Name");
+
             }
 
 
@@ -193,33 +212,14 @@ public class HomeFragment extends Fragment {
         month = new SimpleDateFormat("MMMM").format(new Date());
         year = new SimpleDateFormat("yyyy").format(new Date());
 
-        int totalBazar = handler.getTotalBazar(month,year);
+        double totalBazar = bazarDataSource.getTotalBazar(month,year);
+        double bPerCost = 0.0;
 
-        int bPerCost = handler.getBazarPerCost(month,year);
+        if(totalBazar > 0)
+            bPerCost= totalBazar / bazarDataSource.getMembersName(month,year).size();
 
         tvHTotalBazar.setText(totalBazar+"");
-        tvHBPerhead.setText(bPerCost+"");
-
-        return view;
-    }
-
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        MainActivity activity = (MainActivity) context;
-        NavigationView navigationView = (NavigationView) activity.findViewById(R.id.nav_view);
-        SharedPreferences sharedPref = context.getSharedPreferences(Constant.MY_PREFS_NAME,Context.MODE_PRIVATE);
-
-        if(sharedPref != null)
-            if(sharedPref.getBoolean(Constant.SETTINGS_PREFS_WITHOUT_MEAL,true)) {
-
-                navigationView.getMenu().findItem(R.id.nav_add_meal).setVisible(false);
-
-            } else if(sharedPref.getBoolean(Constant.SETTINGS_PREFS_WITH_MEAL,true)){
-
-                navigationView.getMenu().findItem(R.id.nav_add_meal).setVisible(true);
-            }
+        tvHBPerhead.setText(String.format("%.2f",Math.ceil(bPerCost)));
     }
 
 }

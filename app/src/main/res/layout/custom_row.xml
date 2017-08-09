@@ -1,60 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="80dp">
 
-    <LinearLayout
+    <View
+        android:id="@+id/shadowViewMealCreditItem"
         android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:layout_margin="3dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="#cccccc" />
 
-        <TextView
+    <RelativeLayout
+        android:id="@+id/innerContainerMealDebitItem"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:background="#ffffff" >
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Name"
-            android:background="@drawable/border_panel"
-            android:layout_weight="1"
-            android:id="@+id/tvCustomName"
-            android:gravity="left"
-            android:layout_margin="1dp" />
+            android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Credit"
-            android:layout_weight="1"
-            android:id="@+id/tvCustomCredit"
-            android:background="@drawable/border_panel"
-            android:gravity="right"
-            android:layout_margin="1dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Name"
+                android:layout_weight="1"
+                android:id="@+id/tvCustomName"
+                android:gravity="left|center" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Debit"
-            android:layout_weight="1"
-            android:id="@+id/tvCustomDebit"
-            android:background="@drawable/border_panel"
-            android:gravity="right"
-            android:layout_margin="1dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Credit"
+                android:layout_weight="1"
+                android:id="@+id/tvCustomCredit"
+                android:gravity="right|center" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Balance"
-            android:layout_weight="1"
-            android:id="@+id/tvCustomBalance"
-            android:background="@drawable/border_panel"
-            android:gravity="right"
-            android:layout_margin="1dp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Debit"
+                android:layout_weight="1"
+                android:id="@+id/tvCustomDebit"
+                android:gravity="right|center"/>
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Balance"
+                android:layout_weight="1"
+                android:id="@+id/tvCustomBalance"
+                android:gravity="right|center"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
 </RelativeLayout>

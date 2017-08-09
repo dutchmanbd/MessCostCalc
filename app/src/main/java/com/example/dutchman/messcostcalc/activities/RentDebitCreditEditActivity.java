@@ -27,6 +27,7 @@ import com.example.dutchman.messcostcalc.R;
 import com.example.dutchman.messcostcalc.constants.Constant;
 import com.example.dutchman.messcostcalc.constants.MySharedPref;
 import com.example.dutchman.messcostcalc.db.MealDebitCreditDataSource;
+import com.example.dutchman.messcostcalc.db.RentDebitCreditDataSource;
 import com.example.dutchman.messcostcalc.models.Credit;
 
 import java.text.SimpleDateFormat;
@@ -34,34 +35,32 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class MealDebitCreditEditActivity extends AppCompatActivity {
+public class RentDebitCreditEditActivity extends AppCompatActivity {
 
+    private boolean rentCreditHasChanged = false;
 
-    private boolean mealCreditHasChanged = false;
+    private EditText etRentCreditDate;
+    private EditText etRentCreditTk;
 
-    private EditText etMealCreditDate;
-    private EditText etMealCreditTk;
+    private AutoCompleteTextView acRentCreditName;
 
-    private AutoCompleteTextView acMealCreditName;
+    private ImageButton ibRentCreditCalendar;
 
-    private ImageButton ibMealCreditCalendar;
-
-    private MealDebitCreditDataSource mealDebitCreditDataSource;
+    private RentDebitCreditDataSource rentDebitCreditDataSource;
     private Context context;
 
-    private Intent mealCreditIntent;
+    private Intent rentCreditIntent;
 
-    private int mealCreditId;
+    private int rentCreditId;
 
     private Credit credit;
 
     private String activityType;
 
-
     private View.OnTouchListener touchListener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
-            mealCreditHasChanged = true;
+            rentCreditHasChanged = true;
             return false;
         }
     };
@@ -70,32 +69,30 @@ public class MealDebitCreditEditActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_meal_debit_credit_edit);
+        setContentView(R.layout.activity_rent_debit_credit_edit);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         context = getApplicationContext();
 
-        mealDebitCreditDataSource = MealDebitCreditDataSource.getInstance(context);
+        rentDebitCreditDataSource = RentDebitCreditDataSource.getInstance(context);
 
-        mealCreditIntent = getIntent();
+        rentCreditIntent = getIntent();
 
         initializeViews();
-
     }
-
 
     @Override
     protected void onResume() {
         super.onResume();
-        mealDebitCreditDataSource = MealDebitCreditDataSource.getInstance(context);
+        rentDebitCreditDataSource = RentDebitCreditDataSource.getInstance(context);
     }
 
 
     @Override
     protected void onPause() {
         super.onPause();
-        MySharedPref.save(context,Constant.Class.MEAL_CREDIT_DEBIT);
+        MySharedPref.save(context, Constant.Class.RENT_CREDIT_DEBIT);
     }
 
 
@@ -129,8 +126,8 @@ public class MealDebitCreditEditActivity extends AppCompatActivity {
             case android.R.id.home:
                 // If the credit hasn't changed, continue with navigating up to parent activity
                 // which is the {@link MainActivity}.
-                if (!mealCreditHasChanged) {
-                    NavUtils.navigateUpFromSameTask(MealDebitCreditEditActivity.this);
+                if (!rentCreditHasChanged) {
+                    NavUtils.navigateUpFromSameTask(RentDebitCreditEditActivity.this);
                     return true;
                 }
 
@@ -142,7 +139,7 @@ public class MealDebitCreditEditActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 // User clicked "Discard" button, navigate to parent activity.
-                                NavUtils.navigateUpFromSameTask(MealDebitCreditEditActivity.this);
+                                NavUtils.navigateUpFromSameTask(RentDebitCreditEditActivity.this);
                             }
                         };
 
@@ -167,7 +164,7 @@ public class MealDebitCreditEditActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        if (!mealCreditHasChanged) {
+        if (!rentCreditHasChanged) {
             super.onBackPressed();
             return;
         }
@@ -191,17 +188,17 @@ public class MealDebitCreditEditActivity extends AppCompatActivity {
 
     private void initializeViews(){
 
-        etMealCreditDate = (EditText) findViewById(R.id.edit_text_meal_db_date);
-        etMealCreditTk = (EditText) findViewById(R.id.edit_text_meal_db_tk);
+        etRentCreditDate = (EditText) findViewById(R.id.edit_text_rent_db_date);
+        etRentCreditTk = (EditText) findViewById(R.id.edit_text_rent_db_tk);
 
-        acMealCreditName = (AutoCompleteTextView) findViewById(R.id.auto_complete_meal_db_name);
+        acRentCreditName = (AutoCompleteTextView) findViewById(R.id.auto_complete_rent_db_name);
 
-        ibMealCreditCalendar = (ImageButton) findViewById(R.id.image_button_meal_db_calendar);
+        ibRentCreditCalendar = (ImageButton) findViewById(R.id.image_button_rent_db_calendar);
 
-        etMealCreditDate.setOnTouchListener(touchListener);
-        etMealCreditTk.setOnTouchListener(touchListener);
-        acMealCreditName.setOnTouchListener(touchListener);
-        ibMealCreditCalendar.setOnTouchListener(touchListener);
+        etRentCreditDate.setOnTouchListener(touchListener);
+        etRentCreditTk.setOnTouchListener(touchListener);
+        acRentCreditName.setOnTouchListener(touchListener);
+        ibRentCreditCalendar.setOnTouchListener(touchListener);
 
 
         setActions();
@@ -210,7 +207,7 @@ public class MealDebitCreditEditActivity extends AppCompatActivity {
 
     private void setActions(){
 
-        ibMealCreditCalendar.setOnClickListener(new View.OnClickListener() {
+        ibRentCreditCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DialogFragment newFragment = new DatePickerFragment();
@@ -219,30 +216,30 @@ public class MealDebitCreditEditActivity extends AppCompatActivity {
             }
         });
 
-        List<String> membersName = mealDebitCreditDataSource.getMembersName(1);
+        List<String> membersName = rentDebitCreditDataSource.getMembersName(1);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item, membersName);
-        acMealCreditName.setAdapter(adapter);
-        acMealCreditName.setThreshold(1);
+        acRentCreditName.setAdapter(adapter);
+        acRentCreditName.setThreshold(1);
 
 
-        activityType = mealCreditIntent.getStringExtra(Constant.ACTIVITY_TYPE);
+        activityType = rentCreditIntent.getStringExtra(Constant.ACTIVITY_TYPE);
 
         String subtitle = "";
         if(activityType.equals(Constant.ACTIVITY_TYPE_ADD)){
-            subtitle = "Add Member";
+            subtitle = "Add Credit";
             invalidateOptionsMenu();
             setInitialDate();
 
         } else if(activityType.equals(Constant.ACTIVITY_TYPE_EDIT)){
-            subtitle = "Edit Member";
+            subtitle = "Edit Credit";
 
-            mealCreditId = mealCreditIntent.getIntExtra(Constant.MEMBER_ITEM_ID, -1);
-            Log.e("MemberEditActivity", "debit list item position: " + mealCreditId);
-            if (mealCreditId > -1) {
-                credit = mealDebitCreditDataSource.getCredit(mealCreditId);
-                etMealCreditDate.setText(credit.getDate());
-                acMealCreditName.setText(credit.getName());
-                etMealCreditTk.setText(credit.getTk()+"");
+            rentCreditId = rentCreditIntent.getIntExtra(Constant.MEMBER_ITEM_ID, -1);
+            Log.e("MemberEditActivity", "debit list item position: " + rentCreditId);
+            if (rentCreditId > -1) {
+                credit = rentDebitCreditDataSource.getCredit(rentCreditId);
+                etRentCreditDate.setText(credit.getDate());
+                acRentCreditName.setText(credit.getName());
+                etRentCreditTk.setText(credit.getTk()+"");
             } else {
                 Toast.makeText(this, "Error loading debit!", Toast.LENGTH_SHORT).show();
             }
@@ -257,7 +254,7 @@ public class MealDebitCreditEditActivity extends AppCompatActivity {
 
     private void setInitialDate() {
         String date = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
-        etMealCreditDate.setText(date);
+        etRentCreditDate.setText(date);
     }
 
 
@@ -285,9 +282,9 @@ public class MealDebitCreditEditActivity extends AppCompatActivity {
 
 
     private void saveCredit() {
-        String creditDate = etMealCreditDate.getText().toString().trim();
-        String creditName = acMealCreditName.getText().toString().trim();
-        String creditTk = etMealCreditTk.getText().toString().trim();
+        String creditDate = etRentCreditDate.getText().toString().trim();
+        String creditName = acRentCreditName.getText().toString().trim();
+        String creditTk = etRentCreditTk.getText().toString().trim();
 
 
         if (TextUtils.isEmpty(creditDate)) {
@@ -312,7 +309,7 @@ public class MealDebitCreditEditActivity extends AppCompatActivity {
 
             if (activityType.equals(Constant.ACTIVITY_TYPE_ADD)) {
                 Log.d("MealDebitCreditDataSource", "saveCredit: "+credit.getName()+" "+credit.getTk()+ " "+creditTk);
-                boolean inserted = mealDebitCreditDataSource.insertCredit(credit);
+                boolean inserted = rentDebitCreditDataSource.insertCredit(credit);
                 if (inserted) {
                     Toast.makeText(this, "Credit saved!", Toast.LENGTH_SHORT).show();
                     finish();
@@ -382,7 +379,7 @@ public class MealDebitCreditEditActivity extends AppCompatActivity {
 
             String date = String.format("%02d-%02d-%d",day,month,year);
 
-            etMealCreditDate.setText(date);
+            etRentCreditDate.setText(date);
         }
 
     }
