@@ -6,21 +6,16 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.dutchman.messcostcalc.constants.Constant;
 import com.example.dutchman.messcostcalc.db.BazarDataSource;
-import com.example.dutchman.messcostcalc.db.DBHandler;
 import com.example.dutchman.messcostcalc.MainActivity;
 import com.example.dutchman.messcostcalc.db.RentInfoDatatSource;
 import com.example.dutchman.messcostcalc.models.Bazar;
-import com.example.dutchman.messcostcalc.models.MemberInfo;
 import com.example.dutchman.messcostcalc.R;
 
 import java.text.ParseException;

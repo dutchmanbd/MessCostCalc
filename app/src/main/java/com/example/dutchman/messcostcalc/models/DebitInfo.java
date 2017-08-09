@@ -5,55 +5,28 @@ package com.example.dutchman.messcostcalc.models;
  */
 public class DebitInfo {
 
-
-    private String pName;
-    private double pCredit;
-    private double pDebit;
-    private double pBalance;
+    private Credit credit;
+    private double debit;
+    private double balance;
 
 
-    public DebitInfo(){
+    public DebitInfo(Credit credit, double debit, double balance){
 
-    }
-
-    public DebitInfo(String pName,double pCredit, double pDebit, double pBalance){
-
-        this.pName = pName;
-        this.pCredit = pCredit;
-        this.pDebit = pDebit;
-        this.pBalance = pBalance;
+        this.credit = credit;
+        this.debit = debit;
+        this.balance = balance;
 
     }
 
-    public String getPersonName() {
-        return pName;
+    public Credit getCredit() {
+        return credit;
     }
 
-    public void setPersonName(String pName) {
-        this.pName = pName;
+    public double getDebit() {
+        return debit;
     }
 
-    public double getpCredit() {
-        return pCredit;
-    }
-
-    public void setpCredit(int pCredit) {
-        this.pCredit = pCredit;
-    }
-
-    public double getpDebit() {
-        return pDebit;
-    }
-
-    public void setpDebit(int pDebit) {
-        this.pDebit = pDebit;
-    }
-
-    public double getpBalance() {
-        return pBalance;
-    }
-
-    public void setpBalance(int pBalance) {
-        this.pBalance = pBalance;
+    public double getBalance() {
+        return balance;
     }
 }

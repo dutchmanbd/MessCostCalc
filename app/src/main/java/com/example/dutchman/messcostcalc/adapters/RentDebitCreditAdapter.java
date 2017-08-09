@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.dutchman.messcostcalc.R;
 import com.example.dutchman.messcostcalc.models.Credit;
+import com.example.dutchman.messcostcalc.models.DebitInfo;
 
 import java.util.List;
 
@@ -19,11 +20,11 @@ import java.util.List;
  * Created by dutchman on 8/8/17.
  */
 
-public class RentDebitCreditAdapter extends ArrayAdapter<Credit> {
+public class RentDebitCreditAdapter extends ArrayAdapter<DebitInfo> {
 
 
-    public RentDebitCreditAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<Credit> credits) {
-        super(context, resource, credits);
+    public RentDebitCreditAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<DebitInfo> debitInfos) {
+        super(context, resource, debitInfos);
     }
 
     @NonNull
@@ -34,7 +35,16 @@ public class RentDebitCreditAdapter extends ArrayAdapter<Credit> {
             listItemView = LayoutInflater.from(getContext()).inflate(R.layout.single_meal_credit_item, parent, false);
         }
 
-        Credit credit = getItem(position);
+        DebitInfo debitInfo = getItem(position);
+
+        Credit credit = debitInfo.getCredit();
+
+        double debit = debitInfo.getDebit();
+        double balance = debitInfo.getBalance();
+
+        String creditString = String.format("%.2f",credit.getTk());
+        String debitString = String.format("%.2f",debit);
+        String balanceString = String.format("%.2f",balance);
 
         TextView tvSingleMemberName = (TextView) listItemView.findViewById(R.id.tvMealDebitName);
 
@@ -42,15 +52,15 @@ public class RentDebitCreditAdapter extends ArrayAdapter<Credit> {
 
         TextView tvMealDebitCreditTk = (TextView) listItemView.findViewById(R.id.tvMealDebitCreditTk);
 
-        tvMealDebitCreditTk.setText(credit.getTk() + "");
+        tvMealDebitCreditTk.setText(creditString);
 
         TextView tvMealDebitDebitTk = (TextView) listItemView.findViewById(R.id.tvMealDebitDebitTk);
 
-        tvMealDebitDebitTk.setText("" + credit.getTk());
+        tvMealDebitDebitTk.setText(debitString);
 
         TextView tvMealDebitBalance = (TextView) listItemView.findViewById(R.id.tvMealDebitBalance);
 
-        tvMealDebitBalance.setText("" + credit.getTk());
+        tvMealDebitBalance.setText(balanceString);
 
         return listItemView;
     }

@@ -2,36 +2,24 @@ package com.example.dutchman.messcostcalc.fragments;
 
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.dutchman.messcostcalc.MainActivity;
-import com.example.dutchman.messcostcalc.adapters.CustomMemberDetailDialog;
 import com.example.dutchman.messcostcalc.adapters.MemberAdapter;
-import com.example.dutchman.messcostcalc.db.DBHandler;
 import com.example.dutchman.messcostcalc.R;
 import com.example.dutchman.messcostcalc.db.MemberDataSource;
 import com.example.dutchman.messcostcalc.models.Member;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 

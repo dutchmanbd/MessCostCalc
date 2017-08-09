@@ -19,7 +19,9 @@ import com.example.dutchman.messcostcalc.activities.RentDebitCreditEditActivity;
 import com.example.dutchman.messcostcalc.adapters.RentDebitCreditAdapter;
 import com.example.dutchman.messcostcalc.constants.Constant;
 import com.example.dutchman.messcostcalc.db.RentDebitCreditDataSource;
+import com.example.dutchman.messcostcalc.db.RentInfoDatatSource;
 import com.example.dutchman.messcostcalc.models.Credit;
+import com.example.dutchman.messcostcalc.models.DebitInfo;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,8 +44,10 @@ public class RentCreditFragment extends Fragment {
 
     private List<Credit> credits;
     private Credit credit;
+    private List<DebitInfo> debitInfoList;
 
     private RentDebitCreditAdapter rentDebitCreditAdapter;
+    private RentInfoDatatSource rentInfoDatatSource;
 
     private ListView lvRentDebits;
     private TextView emptyViewRentDebit;
@@ -62,12 +66,20 @@ public class RentCreditFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_rent_credit, container, false);
 
+        context = getActivity().getApplicationContext();
+
         inits(view);
 
         return view;
     }
 
     private void inits(View view){
+
+        credits = new ArrayList<>();
+        debitInfoList = new ArrayList<>();
+
+        rentInfoDatatSource = RentInfoDatatSource.getInstance(context);
+        rentDebitCreditDataSource = RentDebitCreditDataSource.getInstance(context);
 
         lvRentDebits = (ListView) view.findViewById(R.id.lv_rent_dc);
         emptyViewRentDebit = (TextView) view.findViewById(R.id.empty_view_rent_dc);
@@ -87,20 +99,20 @@ public class RentCreditFragment extends Fragment {
         });
 
 
-        lvRentDebits.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //showCreditDetailInDialog(position);
-                Log.e("CrditFragment", "----------------------position: " + position + " id: " + id);
-
-                sentToEditRentCreditActivity = true;
-                Intent intent = new Intent(getContext(), RentDebitCreditEditActivity.class);
-                intent.putExtra(Constant.ACTIVITY_TYPE, Constant.ACTIVITY_TYPE_EDIT);
-                intent.putExtra(Constant.MEMBER_ITEM_ID, credits.get(position).getId());
-                Log.e(TAG, "Clicked item id: " + id);
-                startActivityForResult(intent, OPEN_ADD_RENT_CREDIT_ACTIVITY);
-            }
-        });
+//        lvRentDebits.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                //showCreditDetailInDialog(position);
+//                Log.e("CrditFragment", "----------------------position: " + position + " id: " + id);
+//
+//                sentToEditRentCreditActivity = true;
+//                Intent intent = new Intent(getContext(), RentDebitCreditEditActivity.class);
+//                intent.putExtra(Constant.ACTIVITY_TYPE, Constant.ACTIVITY_TYPE_EDIT);
+//                intent.putExtra(Constant.MEMBER_ITEM_ID, credits.get(position).getId());
+//                Log.e(TAG, "Clicked item id: " + id);
+//                startActivityForResult(intent, OPEN_ADD_RENT_CREDIT_ACTIVITY);
+//            }
+//        });
 
         loadCredits();
 
@@ -131,25 +143,36 @@ public class RentCreditFragment extends Fragment {
     }
 
     private void loadCredits() {
-        lvRentDebits.setAdapter(new RentDebitCreditAdapter(getContext(),R.layout.single_member_item, new ArrayList<Credit>()));
+        lvRentDebits.setAdapter(new RentDebitCreditAdapter(getContext(),R.layout.single_member_item, new ArrayList<DebitInfo>()));
 
-        credits = new ArrayList<>();
+
         credits.clear();
+        debitInfoList.clear();
 
         try {
             String month = new SimpleDateFormat("MMMM").format(new Date());
             String year  = new SimpleDateFormat("yyyy").format(new Date());
 
             credits = rentDebitCreditDataSource.getCredits(month, year);
+            double debit = rentInfoDatatSource.getPerheadCostFromRent(month, year);
+
+            for (Credit credit : credits){
+
+                DebitInfo debitInfo = new DebitInfo(credit, debit, (credit.getTk()-debit));
+
+                debitInfoList.add(debitInfo);
+
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        if (credits.size() == 0) {
+        if (debitInfoList.size() == 0) {
             emptyViewRentDebit.setVisibility(View.VISIBLE);
         } else {
-            Log.e(TAG, "debitList size: " + credits.size());
-            rentDebitCreditAdapter = new RentDebitCreditAdapter(getContext(), R.layout.single_member_item, credits);
+
+            rentDebitCreditAdapter = new RentDebitCreditAdapter(getContext(), R.layout.single_member_item, debitInfoList);
             lvRentDebits.setAdapter(rentDebitCreditAdapter);
             //tvFooterDebitAmount.setText("" + expenseDataSource.getTotalDebitAmount());
         }

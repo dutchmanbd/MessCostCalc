@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:background="#dddddd"
     android:layout_width="match_parent"
     android:layout_height="60dp">
 
@@ -29,44 +29,49 @@
 
         <LinearLayout
             android:orientation="horizontal"
+            android:weightSum="4"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="18sp"
+                android:textColor="@color/colorBlack"
                 android:text="Name"
                 android:layout_weight="1"
                 android:id="@+id/tvMealDebitName"
                 android:gravity="center|left" />
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="20sp"
+                android:textColor="@color/colorBlack"
                 android:text="Credit"
                 android:layout_weight="1"
                 android:id="@+id/tvMealDebitCreditTk"
-                android:gravity="center|right" />
+                android:gravity="center" />
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="20sp"
+                android:textColor="@color/colorBlack"
                 android:text="Debit"
                 android:layout_weight="1"
                 android:id="@+id/tvMealDebitDebitTk"
-                android:gravity="center|right" />
+                android:gravity="center" />
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="20sp"
+                android:textColor="@color/colorBlack"
                 android:text="Balance"
                 android:layout_weight="1"
                 android:id="@+id/tvMealDebitBalance"
-                android:gravity="center|right"/>
+                android:gravity="center"/>
         </LinearLayout>
 
 

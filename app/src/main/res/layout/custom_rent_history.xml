@@ -1,154 +1,272 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#dddddd"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:weightSum="5"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/linearLayout29">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/tvCRHRent"
-            android:gravity="center"
-            android:textColor="#000000"
+        <RelativeLayout
             android:layout_weight="1"
-            android:hint="House Rent"
-            android:layout_margin="2dp" />
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="#cccccc" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:background="#ffffff" >
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textColor="#000000"
-            android:id="@+id/tvCRHGusCurrent"
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:textSize="20sp"
+                        android:id="@+id/tvCRHRent"
+                        android:gravity="center"
+                        android:textColor="#000000"
+                        android:layout_weight="1"
+                        android:hint="House Rent"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textColor="#000000"
+                        android:id="@+id/tvCRHGusCurrent"
+                        android:layout_weight="1"
+                        android:hint="Gus Current" />
+                </LinearLayout>
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_weight="1"
-            android:hint="Gus Current"
-            android:layout_margin="2dp" />
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="#cccccc" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:background="#ffffff" >
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textColor="#000000"
+                        android:id="@+id/tvCRHServent"
+                        android:layout_weight="1"
+                        android:hint="Servent" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textColor="#000000"
+                        android:id="@+id/tvCRHNet"
+                        android:layout_weight="1"
+                        android:hint="Internet"/>
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="#cccccc" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:background="#ffffff" >
+                    <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textColor="#000000"
+                        android:id="@+id/tvCRHPaper"
+                        android:layout_weight="1"
+                        android:hint="Paper"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textColor="#000000"
+                        android:id="@+id/tvCRHDirst"
+                        android:layout_weight="1"
+                        android:hint="Dirst" />
+                </LinearLayout>
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="#cccccc" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:background="#ffffff" >
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textColor="#000000"
+                        android:id="@+id/tvCRHOthers"
+                        android:layout_weight="1"
+                        android:hint="Others" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textColor="#000000"
+                        android:id="@+id/tvCRHMembers"
+                        android:layout_weight="1"
+                        android:hint="Members"/>
+                </LinearLayout>
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="#cccccc" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:background="#ffffff" >
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textColor="#000000"
+                        android:id="@+id/tvCRHTotal"
+                        android:layout_weight="1"
+                        android:hint="Total"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textSize="20sp"
+                        android:textColor="#000000"
+                        android:id="@+id/tvCRHPerhead"
+                        android:layout_weight="1"
+                        android:hint="Perhead"/>
+                </LinearLayout>
+            </RelativeLayout>
+
+        </RelativeLayout>
+
     </LinearLayout>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@+id/linearLayout29"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/linearLayout30">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textColor="#000000"
-            android:id="@+id/tvCRHServent"
-            android:layout_weight="1"
-            android:hint="Servent"
-            android:layout_margin="2dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textColor="#000000"
-            android:id="@+id/tvCRHNet"
-            android:layout_weight="1"
-            android:hint="Internet"
-            android:layout_margin="2dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@+id/linearLayout30"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/linearLayout31">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textColor="#000000"
-            android:id="@+id/tvCRHPaper"
-            android:layout_weight="1"
-            android:hint="Paper"
-            android:layout_margin="2dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textColor="#000000"
-            android:id="@+id/tvCRHDirst"
-            android:layout_weight="1"
-            android:hint="Dirst"
-            android:layout_margin="2dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@+id/linearLayout31"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/linearLayout32">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textColor="#000000"
-            android:id="@+id/tvCRHOthers"
-            android:layout_weight="1"
-            android:hint="Others"
-            android:layout_margin="2dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textColor="#000000"
-            android:id="@+id/tvCRHMembers"
-            android:layout_weight="1"
-            android:hint="Members"
-            android:layout_margin="2dp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@+id/linearLayout32"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textColor="#000000"
-            android:id="@+id/tvCRHTotal"
-            android:layout_weight="1"
-            android:hint="Total"
-            android:layout_margin="2dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:textColor="#000000"
-            android:id="@+id/tvCRHPerhead"
-            android:layout_weight="1"
-            android:hint="Perhead"
-            android:layout_margin="2dp" />
-    </LinearLayout>
 </RelativeLayout>

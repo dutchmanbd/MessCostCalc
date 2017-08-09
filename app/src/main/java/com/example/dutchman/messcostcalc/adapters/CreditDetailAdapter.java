@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.example.dutchman.messcostcalc.models.PersonCredit;
+import com.example.dutchman.messcostcalc.models.Credit;
 import com.example.dutchman.messcostcalc.R;
 
 import java.util.List;
@@ -16,13 +16,13 @@ import java.util.List;
  * Created by dutchman on 11/15/16.
  */
 
-public class CustomCreditDetailAdapter extends ArrayAdapter<PersonCredit> {
+public class CreditDetailAdapter extends ArrayAdapter<Credit> {
 
-    public CustomCreditDetailAdapter(Context context, int resource) {
+    public CreditDetailAdapter(Context context, int resource) {
         super(context, resource);
     }
 
-    public CustomCreditDetailAdapter(Context context, int resource, List<PersonCredit> objects) {
+    public CreditDetailAdapter(Context context, int resource, List<Credit> objects) {
         super(context, resource, objects);
     }
 
@@ -38,13 +38,16 @@ public class CustomCreditDetailAdapter extends ArrayAdapter<PersonCredit> {
             v = vi.inflate(R.layout.custom_credit_detail_item, null);
         }
 
-        PersonCredit personCredit = getItem(position);
+        Credit personCredit = getItem(position);
 
         TextView tvCCDIDate = (TextView) v.findViewById(R.id.tvCCDIDate);
         TextView tvCCDICredit = (TextView) v.findViewById(R.id.tvCCDICredit);
 
         tvCCDIDate.setText(personCredit.getDate());
-        tvCCDICredit.setText(personCredit.getCredit());
+
+        String amount = String.format("%.2f",personCredit.getTk());
+
+        tvCCDICredit.setText(amount);
 
         return v;
     }

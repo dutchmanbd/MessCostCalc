@@ -5,13 +5,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -19,15 +16,13 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.example.dutchman.messcostcalc.adapters.RentInfoHistoryAdapter;
 import com.example.dutchman.messcostcalc.db.RentDebitCreditDataSource;
 import com.example.dutchman.messcostcalc.db.RentInfoDatatSource;
 import com.example.dutchman.messcostcalc.models.Calculator;
 import com.example.dutchman.messcostcalc.db.DBHandler;
 import com.example.dutchman.messcostcalc.models.DebitInfo;
-import com.example.dutchman.messcostcalc.models.PersonCredit;
 import com.example.dutchman.messcostcalc.R;
-import com.example.dutchman.messcostcalc.adapters.CustomAdapter;
-import com.example.dutchman.messcostcalc.adapters.CustomAdapterRentHistory;
 import com.example.dutchman.messcostcalc.adapters.CustomGoAlertDialog;
 
 import java.text.SimpleDateFormat;
@@ -122,7 +117,7 @@ public class RentHistoryFragment extends Fragment {
 //
 //                            if (!calculators.isEmpty()) {
 //
-//                                CustomAdapterRentHistory adapter = new CustomAdapterRentHistory(context, R.layout.custom_rent_history, calculators);
+//                                RentInfoHistoryAdapter adapter = new RentInfoHistoryAdapter(context, R.layout.custom_rent_history, calculators);
 //
 //                                lvRentHistory.setAdapter(adapter);
 //
@@ -211,7 +206,7 @@ public class RentHistoryFragment extends Fragment {
 
         lvRentHistory = (ListView) view.findViewById(R.id.lvRentHistory);
 
-        ArrayAdapter<String> monthAdapter = new ArrayAdapter<>(context,android.R.layout.simple_spinner_dropdown_item,monthList);
+        ArrayAdapter<String> monthAdapter = new ArrayAdapter<>(context,R.layout.spinner_item,monthList);
         spRHMonth.setAdapter(monthAdapter);
 
         String mnth = new SimpleDateFormat("MMMM").format(new Date());
@@ -268,7 +263,7 @@ public class RentHistoryFragment extends Fragment {
 
                     if (!calculators.isEmpty()) {
 
-                        CustomAdapterRentHistory adapter = new CustomAdapterRentHistory(context, R.layout.custom_rent_history, calculators);
+                        RentInfoHistoryAdapter adapter = new RentInfoHistoryAdapter(context, R.layout.custom_rent_history, calculators);
 
                         lvRentHistory.setAdapter(adapter);
 

@@ -1,23 +1,10 @@
 package com.example.dutchman.messcostcalc.db;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
 
-import com.example.dutchman.messcostcalc.constants.Constant;
 import com.example.dutchman.messcostcalc.constants.DatabaseConstant;
-import com.example.dutchman.messcostcalc.models.Calculator;
-import com.example.dutchman.messcostcalc.models.MemberInfo;
-import com.example.dutchman.messcostcalc.models.MemberMealInfo;
-import com.example.dutchman.messcostcalc.models.PersonCredit;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by dutchman on 10/8/16.
@@ -110,19 +97,10 @@ public class DBHandler extends SQLiteOpenHelper {
             KEY_YEAR +" TEXT,"+ KEY_NUMBER +" INTEGER" + ");";
 
     private static DBHandler handler;
-    private static SQLiteDatabase database;
 
     private DBHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
-    }
-
-    public static SQLiteDatabase getDatabaseInstance(Context context){
-
-        if(database == null)
-            database = getInstance(context).getWritableDatabase();
-
-        return database;
     }
 
     public static DBHandler getInstance(Context context){

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#dddddd"
     tools:context="com.example.dutchman.messcostcalc.fragments.RentCreditFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -41,36 +42,40 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorBlack"
                     android:text="Name"
                     android:layout_weight="1"
                     android:gravity="center|left" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorBlack"
                     android:text="Credit"
                     android:layout_weight="1"
-                    android:gravity="center|right" />
+                    android:gravity="center" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorBlack"
                     android:text="Debit"
                     android:layout_weight="1"
-                    android:gravity="center|right" />
+                    android:gravity="center" />
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorBlack"
                     android:text="Balance"
                     android:layout_weight="1"
-                    android:gravity="center|right"/>
+                    android:gravity="center"/>
             </LinearLayout>
 
 
@@ -86,7 +91,7 @@
 
     <TextView
         android:id="@+id/empty_view_rent_dc"
-        android:text="No Member"
+        android:text="No Credit"
         android:textSize="22sp"
         android:layout_centerInParent="true"
         android:layout_width="wrap_content"

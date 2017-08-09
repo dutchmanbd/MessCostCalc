@@ -8,152 +8,205 @@
     <!-- TODO: Update blank fragment layout -->
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:weightSum="5"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="#cccccc"
-        android:layout_alignParentTop="true"
-        android:id="@+id/linearLayout22">
+        android:layout_height="match_parent">
 
-        <Spinner
+        <RelativeLayout
+            android:layout_weight="0.5"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="textCapWords|textCapSentences"
-            android:ems="10"
-            android:id="@+id/etMHMonth"
-            android:layout_weight="1"
-            android:hint="Month"
-            android:layout_margin="1dp" />
+            android:layout_height="0dp">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="#cccccc" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:background="#ffffff" >
 
-        <EditText
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <Spinner
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/spMHMonth"
+                        android:layout_weight="1"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="number"
+                        android:id="@+id/etMHYear"
+                        android:layout_weight="1"
+                        android:hint="Year" />
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_weight="0.5"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/etMHYear"
-            android:backgroundTint="@color/colorBlack"
-            android:layout_weight="1"
-            android:hint="Year"
-            android:layout_margin="1dp" />
-    </LinearLayout>
+            android:layout_height="0dp">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_below="@+id/linearLayout22"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:id="@+id/linearLayout23"
-        android:layout_margin="2dp">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="3dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="#cccccc" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:background="#ffffff" >
 
-        <RadioGroup
-            android:id="@+id/rg_meal_history_options"
-            android:orientation="horizontal"
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <RadioGroup
+                        android:id="@+id/rg_meal_history_options"
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        >
+                        <RadioButton
+                            android:id="@+id/rb_meal_his_bazar"
+                            android:text="Bazar"
+                            android:checked="true"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent" />
+                        <RadioButton
+                            android:id="@+id/rb_meal_his_cost"
+                            android:text="Cost"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent" />
+                        <RadioButton
+                            android:id="@+id/rb_meal_his_meal"
+                            android:visibility="gone"
+                            android:text="Meal"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="match_parent" />
+
+                    </RadioGroup>
+
+                    <!--<Button-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:text="Bazar"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:background="@drawable/border_round"-->
+                    <!--android:id="@+id/btnMHBazar"-->
+                    <!--android:layout_margin="1dp" />-->
+
+                    <!--<Button-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:text="Cost History"-->
+                    <!--android:background="@drawable/border_round"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:id="@+id/btnMHCost"-->
+                    <!--android:layout_margin="1dp" />-->
+
+                    <!--<Button-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:text="Meal"-->
+                    <!--android:background="@drawable/border_round"-->
+                    <!--android:id="@+id/btnMHMeal"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:layout_margin="1dp" />-->
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_weight="4"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
-            <RadioButton
-                android:id="@+id/rb_meal_his_bazar"
-                android:text="Bazar"
-                android:checked="true"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent" />
-            <RadioButton
-                android:id="@+id/rb_meal_his_cost"
-                android:text="Cost"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="match_parent" />
-            <RadioButton
-                android:id="@+id/rb_meal_his_meal"
+            android:layout_height="0dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:id="@+id/lvMealHistory"
+                    android:choiceMode="singleChoice"/>
+                <LinearLayout
+                    android:id="@+id/footer_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:id="@+id/tvMHTBazar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Total : 0.0"
+                        android:textSize="20sp"
+                        android:textColor="#000000"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvMHPerhead"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="4dp"
+                        android:text="Perhead: 0.0"
+                        android:textColor="#000000"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <ExpandableListView
+                android:id="@+id/ev_meal_his"
                 android:visibility="gone"
-                android:text="Meal"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:groupIndicator="@null"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-        </RadioGroup>
+        </RelativeLayout>
 
-        <!--<Button-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:text="Bazar"-->
-            <!--android:layout_weight="1"-->
-            <!--android:background="@drawable/border_round"-->
-            <!--android:id="@+id/btnMHBazar"-->
-            <!--android:layout_margin="1dp" />-->
 
-        <!--<Button-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:text="Cost History"-->
-            <!--android:background="@drawable/border_round"-->
-            <!--android:layout_weight="1"-->
-            <!--android:id="@+id/btnMHCost"-->
-            <!--android:layout_margin="1dp" />-->
-
-        <!--<Button-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:text="Meal"-->
-            <!--android:background="@drawable/border_round"-->
-            <!--android:id="@+id/btnMHMeal"-->
-            <!--android:layout_weight="1"-->
-            <!--android:layout_margin="1dp" />-->
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_below="@+id/linearLayout23"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:id="@+id/lvMealHistory"
-            android:choiceMode="singleChoice"
-            android:layout_margin="2dp" />
-        <LinearLayout
-            android:id="@+id/footer_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:padding="4dp">
-
-            <TextView
-                android:id="@+id/tvMHTBazar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Total : 0.0"
-                android:textSize="20sp"
-                android:textColor="#000000"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvMHPerhead"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="4dp"
-                android:text="Perhead: 0.0"
-                android:textColor="#000000"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </LinearLayout>
 
     </LinearLayout>
-
-    <ExpandableListView
-        android:id="@+id/ev_meal_his"
-        android:visibility="gone"
-        android:groupIndicator="@null"
-        android:layout_below="@+id/linearLayout23"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
 
 

@@ -115,7 +115,6 @@ public class MealDebitCreditDataSource extends DatabaseDAO{
                     do {
 
                         Credit credit = new Credit();  //convertToCredit(cursor);
-
                         credit.setName(name);
                         credit.setTk(cursor.getDouble(0));
 
@@ -137,6 +136,100 @@ public class MealDebitCreditDataSource extends DatabaseDAO{
 
         return credits;
 
+    }
+
+    public List<Credit> getPersonCredits(String month, String year, String name){
+
+        List<Credit> credits = new ArrayList<>();
+
+        Cursor cursor = null;
+
+        String sql = "SELECT "+ DatabaseConstant.MealDebitCreditTB.COL.KEY_ID +","+ DatabaseConstant.MealDebitCreditTB.COL.KEY_DATE + "," + DatabaseConstant.MealDebitCreditTB.COL.KEY_TK + " FROM "
+                + DatabaseConstant.MealDebitCreditTB.NAME  + " WHERE " + DatabaseConstant.MealDebitCreditTB.COL.KEY_MONTH + " = ? AND " + DatabaseConstant.MealDebitCreditTB.COL.KEY_YEAR + " = ? AND " + DatabaseConstant.MealDebitCreditTB.COL.KEY_MEMBER_NAME + " = ?";
+
+        try{
+
+            cursor = database.rawQuery(sql, new String[]{month, year, name});
+            if (cursor.moveToFirst()) {
+
+                do {
+
+                    Credit credit = new Credit();
+                    credit.setId(cursor.getInt(cursor.getColumnIndex(DatabaseConstant.MealDebitCreditTB.COL.KEY_ID)));
+                    credit.setDate(cursor.getString(cursor.getColumnIndex(DatabaseConstant.MealDebitCreditTB.COL.KEY_DATE)));
+                    credit.setName(name);
+                    credit.setTk(cursor.getDouble(cursor.getColumnIndex(DatabaseConstant.MealDebitCreditTB.COL.KEY_TK)));
+
+                    credits.add(credit);
+
+                } while (cursor.moveToNext());
+
+            }
+
+
+        } catch (Exception e){
+
+
+        } finally {
+            if(cursor != null)
+                cursor.close();
+        }
+
+
+        return credits;
+
+    }
+
+
+    public List<Credit> getCreditForMHistory(String month, String year){
+
+        List<Credit> list = new ArrayList<>();
+        List<String> nameList = null;
+
+        String currentMonth = new SimpleDateFormat("MMMM").format(new Date());
+        String currentYear = new SimpleDateFormat("yyyy").format(new Date());
+
+        MemberDataSource memberDataSource = MemberDataSource.getInstance(context);
+
+        if(currentMonth.equals(month) && currentYear.equals(year))
+            nameList = memberDataSource.getMembersName(1);
+        else
+            nameList = getMembersName(month, year);
+
+        Cursor cursor = null;
+
+        try {
+            for (String name : nameList) {
+
+                String sql = "SELECT SUM(" + DatabaseConstant.MealDebitCreditTB.COL.KEY_TK + ") FROM " + DatabaseConstant.MealDebitCreditTB.NAME + " WHERE " +
+                        DatabaseConstant.MealDebitCreditTB.COL.KEY_MONTH + " = ? AND " + DatabaseConstant.MealDebitCreditTB.COL.KEY_YEAR + " = ? AND " +
+                        DatabaseConstant.MealDebitCreditTB.COL.KEY_MEMBER_NAME + " = ?;";
+                cursor = database.rawQuery(sql, new String[]{month, year, name});
+
+                if (cursor.moveToFirst()) {
+                    do {
+                        Credit credit = new Credit();
+
+                        credit.setName(name);
+                        credit.setTk(cursor.getDouble(0));
+
+                        list.add(credit);
+
+
+                    } while (cursor.moveToNext());
+                }
+
+                if(cursor != null)
+                    cursor.close();
+            }
+        } catch (Exception e){
+
+        } finally {
+            if(cursor != null)
+                cursor.close();
+        }
+
+        return list;
     }
 
     // view last date for homeFragment
@@ -239,58 +332,6 @@ public class MealDebitCreditDataSource extends DatabaseDAO{
 
         return members;
 
-    }
-
-
-    public List<Credit> getCreditForMHistory(String month, String year){
-
-        List<Credit> list = new ArrayList<>();
-        List<String> nameList = null;
-
-        String currentMonth = new SimpleDateFormat("MMMM").format(new Date());
-        String currentYear = new SimpleDateFormat("yyyy").format(new Date());
-
-        MemberDataSource memberDataSource = MemberDataSource.getInstance(context);
-
-        if(currentMonth.equals(month) && currentYear.equals(year))
-            nameList = memberDataSource.getMembersName(1);
-        else
-            nameList = getMembersName(month, year);
-
-        Cursor cursor = null;
-
-        try {
-            for (String name : nameList) {
-
-                String sql = "SELECT SUM(" + DatabaseConstant.MealDebitCreditTB.COL.KEY_TK + ") FROM " + DatabaseConstant.MealDebitCreditTB.NAME + " WHERE " +
-                        DatabaseConstant.MealDebitCreditTB.COL.KEY_MONTH + " = ? AND " + DatabaseConstant.MealDebitCreditTB.COL.KEY_YEAR + " = ? AND " +
-                        DatabaseConstant.MealDebitCreditTB.COL.KEY_MEMBER_NAME + " = ?;";
-                cursor = database.rawQuery(sql, new String[]{month, year, name});
-
-                if (cursor.moveToFirst()) {
-                    do {
-                        Credit credit = new Credit();
-
-                        credit.setName(name);
-                        credit.setTk(cursor.getDouble(0));
-
-                        list.add(credit);
-
-
-                    } while (cursor.moveToNext());
-                }
-
-                if(cursor != null)
-                    cursor.close();
-            }
-        } catch (Exception e){
-
-        } finally {
-            if(cursor != null)
-                cursor.close();
-        }
-
-        return list;
     }
 
     public Credit convertToCredit(Cursor cursor){

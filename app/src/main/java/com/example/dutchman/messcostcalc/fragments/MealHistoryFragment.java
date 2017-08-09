@@ -6,14 +6,10 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ListView;
@@ -24,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.dutchman.messcostcalc.adapters.BazarAdapter;
+import com.example.dutchman.messcostcalc.adapters.MealDebitCreditAdapter;
 import com.example.dutchman.messcostcalc.adapters.MealExpendableAdapter;
 import com.example.dutchman.messcostcalc.db.BazarDataSource;
 import com.example.dutchman.messcostcalc.db.DBHandler;
@@ -33,15 +30,8 @@ import com.example.dutchman.messcostcalc.models.Bazar;
 import com.example.dutchman.messcostcalc.models.Credit;
 import com.example.dutchman.messcostcalc.models.DebitInfo;
 import com.example.dutchman.messcostcalc.models.Meal;
-import com.example.dutchman.messcostcalc.models.MemberInfo;
-import com.example.dutchman.messcostcalc.models.MemberMealInfo;
-import com.example.dutchman.messcostcalc.models.PersonCredit;
 import com.example.dutchman.messcostcalc.R;
-import com.example.dutchman.messcostcalc.adapters.CustomAdapter;
-import com.example.dutchman.messcostcalc.adapters.CustomAdapterMealHistory;
-import com.example.dutchman.messcostcalc.adapters.CustomAdapterMealRow;
 import com.example.dutchman.messcostcalc.adapters.CustomGoAlertDialog;
-import com.example.dutchman.messcostcalc.adapters.CustomMemberMealAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -62,7 +52,7 @@ public class MealHistoryFragment extends Fragment{
     private DBHandler handler;
 
     private EditText etMHYear;
-    private Spinner etMHMonth;
+    private Spinner spMHMonth;
 
 
     private RadioGroup rgMealHistoryOption;
@@ -131,19 +121,11 @@ public class MealHistoryFragment extends Fragment{
     public void onPause() {
         super.onPause();
 
-//        bazarDataSource.close();
-//        mealDataSource.close();
-//        mealDebitCreditDataSource.close();
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
-//        bazarDataSource.open();
-//        mealDebitCreditDataSource.open();
-//        mealDataSource.open();
 
     }
 
@@ -157,7 +139,7 @@ public class MealHistoryFragment extends Fragment{
 
 
         // view init
-        etMHMonth = (Spinner) view.findViewById(R.id.etMHMonth);
+        spMHMonth = (Spinner) view.findViewById(R.id.spMHMonth);
         etMHYear  = (EditText) view.findViewById(R.id.etMHYear);
 
         rgMealHistoryOption = (RadioGroup) view.findViewById(R.id.rg_meal_history_options);
@@ -173,13 +155,13 @@ public class MealHistoryFragment extends Fragment{
         tvMHPerhead.setVisibility(View.GONE);
 
         // init spinner
-        ArrayAdapter<String> monthAdapter = new ArrayAdapter<>(context,android.R.layout.simple_spinner_dropdown_item,monthList);
-        etMHMonth.setAdapter(monthAdapter);
+        ArrayAdapter<String> monthAdapter = new ArrayAdapter<>(context,R.layout.spinner_item,monthList);
+        spMHMonth.setAdapter(monthAdapter);
 
         String currentMonth = new SimpleDateFormat("MMMM").format(new Date());
         int index = monthList.indexOf(currentMonth);
 
-        etMHMonth.setSelection(index);
+        spMHMonth.setSelection(index);
 
         // set year
         etMHYear.setText( new SimpleDateFormat("yyyy").format(new Date()));
@@ -231,9 +213,9 @@ public class MealHistoryFragment extends Fragment{
         lvMealHistory.setVisibility(View.VISIBLE);
         evMealHistory.setVisibility(View.GONE);
 
-        if(etMHMonth.getSelectedItemPosition() > 0 && etMHYear.getText().toString().trim().length() > 0){
+        if(spMHMonth.getSelectedItemPosition() > 0 && etMHYear.getText().toString().trim().length() > 0){
 
-            String month = etMHMonth.getSelectedItem().toString().trim();
+            String month = spMHMonth.getSelectedItem().toString().trim();
             String year = etMHYear.getText().toString().trim();
 
             bazarList.clear();
@@ -277,7 +259,7 @@ public class MealHistoryFragment extends Fragment{
 
         } else{
             Toast.makeText(context,"Select month first",Toast.LENGTH_SHORT).show();
-            etMHMonth.performClick();
+            spMHMonth.performClick();
         }
     }
 
@@ -287,14 +269,14 @@ public class MealHistoryFragment extends Fragment{
         lvMealHistory.setVisibility(View.VISIBLE);
         evMealHistory.setVisibility(View.GONE);
 
-        if(etMHMonth.getSelectedItemPosition() > 0 && etMHYear.getText().toString().trim().length() > 0) {
+        if(spMHMonth.getSelectedItemPosition() > 0 && etMHYear.getText().toString().trim().length() > 0) {
 
             tvMHTBazar.setVisibility(View.GONE);
             tvMHPerhead.setVisibility(View.GONE);
 
             debitInfoList.clear();
 
-            String month = etMHMonth.getSelectedItem().toString().trim();
+            String month = spMHMonth.getSelectedItem().toString().trim();
             String year = etMHYear.getText().toString().trim();
 
             List<Credit> personCredits = mealDebitCreditDataSource.getCreditForMHistory(month, year);
@@ -304,25 +286,26 @@ public class MealHistoryFragment extends Fragment{
 
             for (Credit credit : personCredits) {
 
-                debitInfo = new DebitInfo(credit.getName(), credit.getTk(), personCost, (credit.getTk() - personCost));
+                //debitInfo = new DebitInfo(credit.getName(), credit.getTk(), personCost, (credit.getTk() - personCost));
+                debitInfo = new DebitInfo(credit, personCost, (credit.getTk() - personCost));
                 debitInfoList.add(debitInfo);
 
             }
 
-            CustomAdapter adapter = new CustomAdapter(context,R.layout.custom_row,debitInfoList);
+            MealDebitCreditAdapter adapter = new MealDebitCreditAdapter(getContext(), R.layout.single_member_item, debitInfoList);
 
             lvMealHistory.setAdapter(adapter);
         } else{
             Toast.makeText(context,"Select month first",Toast.LENGTH_SHORT).show();
-            etMHMonth.performClick();
+            spMHMonth.performClick();
         }
     }
 
     private void getMealHistory(){
 
-        if(etMHMonth.getSelectedItemPosition() > 0 && etMHYear.getText().toString().trim().length() > 0){
+        if(spMHMonth.getSelectedItemPosition() > 0 && etMHYear.getText().toString().trim().length() > 0){
 
-            String month = etMHMonth.getSelectedItem().toString().trim();
+            String month = spMHMonth.getSelectedItem().toString().trim();
             String year = etMHYear.getText().toString().trim();
 
             tvMHTBazar.setVisibility(View.GONE);
@@ -359,7 +342,7 @@ public class MealHistoryFragment extends Fragment{
 
         } else{
             Toast.makeText(context,"Select month first",Toast.LENGTH_SHORT).show();
-            etMHMonth.performClick();
+            spMHMonth.performClick();
         }
     }
 
